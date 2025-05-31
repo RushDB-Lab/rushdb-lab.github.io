@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RushDB - 无限进步</title>
+    <link rel="icon" type="image/png" href="RushDB.png" />
+    <link rel="shortcut icon" type="image/png" href="RushDB.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -32,7 +34,7 @@
 
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: 60px; /* 根据导航栏高度调整 */
+        scroll-padding-top: 60px;
       }
 
       body {
@@ -126,7 +128,7 @@
         cursor: pointer;
         transition: opacity 0.3s ease;
       }
-      
+
       .nav-logo:hover {
         opacity: 0.8;
       }
@@ -275,7 +277,32 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        line-height: 1.1;
+        line-height: 1.3;
+      }
+
+      /* 英文版本标题优化 - 确保在一行完整显示 */
+      .hero-title .lang-content.lang-en {
+        font-size: clamp(2.2rem, 6.5vw, 5rem);
+        white-space: nowrap;
+      }
+
+      /* 响应式调整 - 保持完整显示 */
+      @media (max-width: 1200px) {
+        .hero-title .lang-content.lang-en {
+          font-size: clamp(2rem, 6vw, 4.5rem);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-title .lang-content.lang-en {
+          font-size: clamp(1.8rem, 5.5vw, 3.5rem);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title .lang-content.lang-en {
+          font-size: clamp(1.5rem, 5vw, 2.8rem);
+        }
       }
 
       .hero-subtitle {
@@ -1165,8 +1192,121 @@
           transform: rotate(360deg);
         }
       }
+
+      /* 语言切换下拉选项卡样式 */
+      .language-switcher {
+        position: relative;
+        display: inline-block;
+      }
+
+      .language-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+      }
+
+      .language-trigger:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(59, 130, 246, 0.3);
+        color: var(--text-primary);
+      }
+
+      .language-trigger::after {
+        content: "▼";
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+      }
+
+      .language-switcher.show .language-trigger::after {
+        transform: rotate(180deg);
+      }
+
+      .language-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        background: rgba(26, 26, 26, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 8px;
+        min-width: 150px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(20px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+      }
+
+      .language-switcher.show .language-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .lang-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: left;
+      }
+
+      .lang-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+      }
+
+      .lang-btn.active {
+        background: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+        font-weight: 600;
+      }
+
+      /* 隐藏非当前语言的内容 */
+      .lang-content {
+        display: none;
+      }
+
+      .lang-content.active {
+        display: block;
+      }
+
+      .lang-content.active.inline {
+        display: inline;
+      }
+
+      .lang-content.active.flex {
+        display: flex;
+      }
+
+      .lang-content.active.grid {
+        display: grid;
+      }
     </style>
   </head>
+
   <body>
     <!-- 导航栏 -->
     <nav class="navbar">
@@ -1175,13 +1315,70 @@
           <img src="RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
           <span>RushDB</span>
         </a>
-        <ul class="nav-links">
-          <li><a href="#about">关于我们</a></li>
-          <li><a href="#members">团队成员</a></li>
-          <li><a href="#achievements">竞赛成就</a></li>
-          <li><a href="#projects">项目作品</a></li>
-          <li><a href="#contact">联系我们</a></li>
-        </ul>
+        <div style="display: flex; align-items: center; gap: 2rem">
+          <ul class="nav-links">
+            <li>
+              <a href="#about" class="lang-content lang-zh active">关于我们</a
+              ><a href="#about" class="lang-content lang-en">About Us</a
+              ><a href="#about" class="lang-content lang-ja">私たちについて</a>
+            </li>
+            <li>
+              <a href="#members" class="lang-content lang-zh active">团队成员</a
+              ><a href="#members" class="lang-content lang-en">Team Members</a
+              ><a href="#members" class="lang-content lang-ja"
+                >チームメンバー</a
+              >
+            </li>
+            <li>
+              <a href="#achievements" class="lang-content lang-zh active"
+                >竞赛成就</a
+              ><a href="#achievements" class="lang-content lang-en"
+                >Achievements</a
+              ><a href="#achievements" class="lang-content lang-ja">競技成果</a>
+            </li>
+            <li>
+              <a href="#projects" class="lang-content lang-zh active"
+                >项目作品</a
+              ><a href="#projects" class="lang-content lang-en">Projects</a
+              ><a href="#projects" class="lang-content lang-ja">プロジェクト</a>
+            </li>
+            <li>
+              <a href="#contact" class="lang-content lang-zh active">联系我们</a
+              ><a href="#contact" class="lang-content lang-en">Contact Us</a
+              ><a href="#contact" class="lang-content lang-ja">お問い合わせ</a>
+            </li>
+          </ul>
+
+          <!-- 语言切换器 -->
+          <div class="language-switcher" id="languageSwitcher">
+            <div class="language-trigger" onclick="toggleLanguageSwitcher()">
+              中文
+            </div>
+            <div class="language-dropdown">
+              <button
+                class="lang-btn active"
+                data-lang="zh"
+                onclick="switchLanguage('zh')"
+              >
+                中文
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="en"
+                onclick="switchLanguage('en')"
+              >
+                English
+              </button>
+              <button
+                class="lang-btn"
+                data-lang="ja"
+                onclick="switchLanguage('ja')"
+              >
+                日本語
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
 
@@ -1189,10 +1386,27 @@
     <section class="hero">
       <div class="container">
         <div class="hero-content">
-          <h1 class="hero-title">RushDB，无限进步</h1>
-          <p class="hero-subtitle">专注数据库技术的本科生竞赛团队</p>
+          <h1 class="hero-title">
+            <span class="lang-content lang-zh active">RushDB，无限进步</span>
+            <span class="lang-content lang-en">RushDB, Unlimited Progress</span>
+            <span class="lang-content lang-ja">RushDB、無限の進歩</span>
+          </h1>
+          <p class="hero-subtitle">
+            <span class="lang-content lang-zh active"
+              >专注数据库技术的本科生竞赛团队</span
+            >
+            <span class="lang-content lang-en"
+              >Undergraduate competition team focused on database
+              technology</span
+            >
+            <span class="lang-content lang-ja"
+              >データベース技術に特化した学部生競技チーム</span
+            >
+          </p>
           <a href="#about" class="cta-button">
-            <span>了解更多</span>
+            <span class="lang-content lang-zh active">了解更多</span>
+            <span class="lang-content lang-en">Learn More</span>
+            <span class="lang-content lang-ja">詳しく見る</span>
             <span>→</span>
           </a>
         </div>
@@ -1204,35 +1418,84 @@
       <main class="main-content">
         <div class="content-inner">
           <section class="section" id="about">
-            <h2 class="section-title">团队简介</h2>
+            <h2 class="section-title">
+              <span class="lang-content lang-zh active">团队简介</span>
+              <span class="lang-content lang-en">Team Introduction</span>
+              <span class="lang-content lang-ja">チーム紹介</span>
+            </h2>
             <div class="intro-container">
               <div class="intro-highlight">
                 <div class="intro-icon">🚀</div>
-                <h3 class="intro-subtitle">专注数据库技术创新</h3>
+                <h3 class="intro-subtitle">
+                  <span class="lang-content lang-zh active"
+                    >专注数据库技术创新</span
+                  >
+                  <span class="lang-content lang-en"
+                    >Focused on Database Technology Innovation</span
+                  >
+                  <span class="lang-content lang-ja"
+                    >データベース技術革新に専念</span
+                  >
+                </h3>
               </div>
               <p class="intro-text">
-                <strong>RushDB</strong>
-                是一支充满热情、专注于数据库技术的竞赛团队。我们致力于在数据库设计、查询优化、性能调优及管理等领域不断探索和挑战。我们的目标是在各大数据库相关竞赛中取得优异成绩，并推动数据库技术的学习与应用。
+                <span class="lang-content lang-zh active">
+                  <strong>RushDB</strong>
+                  是一支充满热情、专注于数据库技术的竞赛团队。我们致力于在数据库设计、查询优化、性能调优及管理等领域不断探索和挑战。我们的目标是在各大数据库相关竞赛中取得优异成绩，并推动数据库技术的学习与应用。
+                </span>
+                <span class="lang-content lang-en">
+                  <strong>RushDB</strong>
+                  is a passionate competition team focused on database
+                  technology. We are committed to continuous exploration and
+                  challenges in database design, query optimization, performance
+                  tuning, and management. Our goal is to achieve excellent
+                  results in major database-related competitions and promote the
+                  learning and application of database technology.
+                </span>
+                <span class="lang-content lang-ja">
+                  <strong>RushDB</strong>
+                  は、データベース技術に特化した情熱的な競技チームです。データベース設計、クエリ最適化、パフォーマンスチューニング、管理などの分野で継続的な探求と挑戦に取り組んでいます。主要なデータベース関連競技で優秀な成績を収め、データベース技術の学習と応用を推進することが私たちの目標です。
+                </span>
               </p>
               <div class="intro-stats">
                 <div class="stat-item">
                   <div class="stat-number">3</div>
-                  <div class="stat-label">团队成员</div>
+                  <div class="stat-label">
+                    <span class="lang-content lang-zh active">团队成员</span>
+                    <span class="lang-content lang-en">Team Members</span>
+                    <span class="lang-content lang-ja">チームメンバー</span>
+                  </div>
                 </div>
                 <div class="stat-item">
                   <div class="stat-number">3</div>
-                  <div class="stat-label">全国奖项</div>
+                  <div class="stat-label">
+                    <span class="lang-content lang-zh active">全国奖项</span>
+                    <span class="lang-content lang-en">National Awards</span>
+                    <span class="lang-content lang-ja">全国賞</span>
+                  </div>
                 </div>
                 <div class="stat-item">
                   <div class="stat-number">1</div>
-                  <div class="stat-label">开源项目</div>
+                  <div class="stat-label">
+                    <span class="lang-content lang-zh active">开源项目</span>
+                    <span class="lang-content lang-en"
+                      >Open Source Projects</span
+                    >
+                    <span class="lang-content lang-ja"
+                      >オープンソースプロジェクト</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
           <section class="section" id="members">
-            <h2 class="section-title">团队成员</h2>
+            <h2 class="section-title">
+              <span class="lang-content lang-zh active">团队成员</span>
+              <span class="lang-content lang-en">Team Members</span>
+              <span class="lang-content lang-ja">チームメンバー</span>
+            </h2>
             <div class="members-grid">
               <a
                 href="https://mmmttt000045.github.io"
@@ -1243,15 +1506,29 @@
                   <div class="member-avatar">
                     <img src="MingTai.png" alt="明泰" class="avatar-img" />
                   </div>
-                  <div class="member-name">明泰</div>
+                  <div class="member-name">明泰 / MingTai</div>
                   <div class="member-info">
                     <div class="member-detail">
                       <span class="detail-icon">🎓</span>
-                      <span>成都理工大学 26 届</span>
+                      <span class="lang-content lang-zh active"
+                        >成都理工大学 26 届</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Chengdu University of Technology, Class of 2026</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >成都理工大学 26期</span
+                      >
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">💻</span>
-                      <span>智能科学与技术</span>
+                      <span class="lang-content lang-zh active"
+                        >智能科学与技术</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Intelligent Science and Technology</span
+                      >
+                      <span class="lang-content lang-ja">知能科学技術</span>
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">📧</span>
@@ -1269,15 +1546,29 @@
                   <div class="member-avatar">
                     <img src="HuXin.png" alt="胡鑫" class="avatar-img" />
                   </div>
-                  <div class="member-name">胡鑫</div>
+                  <div class="member-name">胡鑫 / HuXin</div>
                   <div class="member-info">
                     <div class="member-detail">
                       <span class="detail-icon">🎓</span>
-                      <span>成都理工大学 26 届</span>
+                      <span class="lang-content lang-zh active"
+                        >成都理工大学 26 届</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Chengdu University of Technology, Class of 2026</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >成都理工大学 26期</span
+                      >
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">💻</span>
-                      <span>智能科学与技术</span>
+                      <span class="lang-content lang-zh active"
+                        >智能科学与技术</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Intelligent Science and Technology</span
+                      >
+                      <span class="lang-content lang-ja">知能科学技術</span>
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">📧</span>
@@ -1295,15 +1586,31 @@
                   <div class="member-avatar">
                     <img src="WuYiMing.png" alt="吴奕民" class="avatar-img" />
                   </div>
-                  <div class="member-name">吴奕民</div>
+                  <div class="member-name">吴奕民 / WuYiMing</div>
                   <div class="member-info">
                     <div class="member-detail">
                       <span class="detail-icon">🎓</span>
-                      <span>沈阳理工大学 25 届</span>
+                      <span class="lang-content lang-zh active"
+                        >沈阳理工大学 25 届</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Shenyang Ligong University, Class of 2025</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >瀋陽理工大学 25期</span
+                      >
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">💻</span>
-                      <span>计算机科学与技术</span>
+                      <span class="lang-content lang-zh active"
+                        >计算机科学与技术</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Computer Science and Technology</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >コンピュータ科学技術</span
+                      >
                     </div>
                     <div class="member-detail">
                       <span class="detail-icon">📧</span>
@@ -1316,7 +1623,11 @@
           </section>
 
           <section class="section" id="achievements">
-            <h2 class="section-title">竞赛成就</h2>
+            <h2 class="section-title">
+              <span class="lang-content lang-zh active">竞赛成就</span>
+              <span class="lang-content lang-en">Competition Achievements</span>
+              <span class="lang-content lang-ja">競技成果</span>
+            </h2>
             <div class="achievements">
               <a
                 href="https://open.oceanbase.com/competition#armory"
@@ -1327,14 +1638,44 @@
                   <div class="achievement-badge">🏆</div>
                   <div class="achievement-content">
                     <div class="achievement-title">
-                      全国大学生计算机系统能力大赛暨第四届 OceanBase
-                      数据库创新设计赛 (2024)
+                      <span class="lang-content lang-zh active">
+                        全国大学生计算机系统能力大赛暨第四届 OceanBase
+                        数据库创新设计赛 (2024)
+                      </span>
+                      <span class="lang-content lang-en">
+                        National College Computer System Capability Competition
+                        & 4th OceanBase Database Innovation Design Competition
+                        (2024)
+                      </span>
+                      <span class="lang-content lang-ja">
+                        全国大学生コンピュータシステム能力大会および第4回OceanBaseデータベース革新設計競技
+                        (2024)
+                      </span>
                     </div>
                     <div class="achievement-result">
-                      🏆 全国第三（本科生第一）· 四川省第一名
+                      <span class="lang-content lang-zh active">
+                        🏆 全国第三（本科生第一）· 四川省第一名
+                      </span>
+                      <span class="lang-content lang-en">
+                        🏆 3rd Place Nationally (1st Among Undergraduates) · 1st
+                        Place in Sichuan Province
+                      </span>
+                      <span class="lang-content lang-ja">
+                        🏆 全国第3位（学部生第1位）・四川省第1位
+                      </span>
                     </div>
                     <div class="achievement-desc">
-                      在全国2600余名选手中脱颖而出，展现了团队在数据库技术方面的卓越实力
+                      <span class="lang-content lang-zh active">
+                        在全国2600余名选手中脱颖而出，展现了团队在数据库技术方面的卓越实力
+                      </span>
+                      <span class="lang-content lang-en">
+                        Stood out among over 2,600 contestants nationwide,
+                        demonstrating the team's exceptional expertise in
+                        database technology
+                      </span>
+                      <span class="lang-content lang-ja">
+                        全国2600名以上の参加者の中で頭角を現し、データベース技術における卓越した実力を示しました
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1348,11 +1689,39 @@
                   <div class="achievement-badge">🥇</div>
                   <div class="achievement-content">
                     <div class="achievement-title">
-                      2024 年全国大学生计算机系统能力大赛-数据库管理系统设计赛
+                      <span class="lang-content lang-zh active">
+                        2024 年全国大学生计算机系统能力大赛-数据库管理系统设计赛
+                      </span>
+                      <span class="lang-content lang-en">
+                        2024 National College Computer System Capability
+                        Competition - Database Management System Design
+                        Competition
+                      </span>
+                      <span class="lang-content lang-ja">
+                        2024年全国大学生コンピュータシステム能力大会-データベース管理システム設計競技
+                      </span>
                     </div>
-                    <div class="achievement-result">🥇 全国一等奖 ×2</div>
+                    <div class="achievement-result">
+                      <span class="lang-content lang-zh active"
+                        >🥇 全国一等奖 ×2</span
+                      >
+                      <span class="lang-content lang-en"
+                        >🥇 National First Prize ×2</span
+                      >
+                      <span class="lang-content lang-ja">🥇 全国一等賞 ×2</span>
+                    </div>
                     <div class="achievement-desc">
-                      霸榜全国第二，第三，证明了团队在数据库系统设计方面的专业能力
+                      <span class="lang-content lang-zh active">
+                        霸榜全国第二，第三，证明了团队在数据库系统设计方面的专业能力
+                      </span>
+                      <span class="lang-content lang-en">
+                        Dominated the rankings with 2nd and 3rd place
+                        nationally, proving the team's professional capabilities
+                        in database system design
+                      </span>
+                      <span class="lang-content lang-ja">
+                        全国第2位、第3位でランキングを独占し、データベースシステム設計における専門能力を証明しました
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1361,7 +1730,11 @@
           </section>
 
           <section class="section" id="projects">
-            <h2 class="section-title">项目作品</h2>
+            <h2 class="section-title">
+              <span class="lang-content lang-zh active">项目作品</span>
+              <span class="lang-content lang-en">Project Works</span>
+              <span class="lang-content lang-ja">プロジェクト作品</span>
+            </h2>
             <div class="projects-grid">
               <a
                 href="https://github.com/RushDB-Lab/miniob-RushDB"
@@ -1378,32 +1751,89 @@
                       />
                     </div>
                     <div class="project-meta">
-                      <div class="project-title">MiniOB 完善版</div>
+                      <div class="project-title">
+                        <span class="lang-content lang-zh active"
+                          >MiniOB 完善版</span
+                        >
+                        <span class="lang-content lang-en"
+                          >MiniOB Enhanced Version</span
+                        >
+                        <span class="lang-content lang-ja">MiniOB 完全版</span>
+                      </div>
                       <div class="project-tags">
-                        <span class="project-tag">数据库</span>
+                        <span class="project-tag">
+                          <span class="lang-content lang-zh active"
+                            >数据库</span
+                          >
+                          <span class="lang-content lang-en">Database</span>
+                          <span class="lang-content lang-ja">データベース</span>
+                        </span>
                         <span class="project-tag">C++</span>
-                        <span class="project-tag">开源</span>
+                        <span class="project-tag">
+                          <span class="lang-content lang-zh active">开源</span>
+                          <span class="lang-content lang-en">Open Source</span>
+                          <span class="lang-content lang-ja"
+                            >オープンソース</span
+                          >
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div class="project-desc">
-                    一个用于分析 SQL
-                    查询性能的工具，提供了完整的数据库管理系统功能实现。基于
-                    MiniOB 框架开发，实现了向量数据库功能，在第四届 OceanBase
-                    数据库大赛中获得初赛第一名的优异成绩。
+                    <span class="lang-content lang-zh active">
+                      一个用于分析 SQL
+                      查询性能的工具，提供了完整的数据库管理系统功能实现。基于
+                      MiniOB 框架开发，实现了向量数据库功能，在第四届 OceanBase
+                      数据库大赛中获得初赛第一名的优异成绩。
+                    </span>
+                    <span class="lang-content lang-en">
+                      A tool for analyzing SQL query performance that provides
+                      complete database management system functionality.
+                      Developed based on the MiniOB framework, it implements
+                      vector database features and achieved first place in the
+                      preliminary round of the 4th OceanBase Database
+                      Competition.
+                    </span>
+                    <span class="lang-content lang-ja">
+                      SQLクエリパフォーマンスを分析するツールで、完全なデータベース管理システム機能を提供します。MiniOBフレームワークをベースに開発され、ベクターデータベース機能を実装し、第4回OceanBaseデータベース大会の予選で第1位の優秀な成績を収めました。
+                    </span>
                   </div>
                   <div class="project-features">
                     <div class="feature-item">
                       <span class="feature-icon">⚡</span>
-                      <span>高性能查询优化</span>
+                      <span class="lang-content lang-zh active"
+                        >高性能查询优化</span
+                      >
+                      <span class="lang-content lang-en"
+                        >High-Performance Query Optimization</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >高性能クエリ最適化</span
+                      >
                     </div>
                     <div class="feature-item">
                       <span class="feature-icon">🔍</span>
-                      <span>向量数据库支持</span>
+                      <span class="lang-content lang-zh active"
+                        >向量数据库支持</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Vector Database Support</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >ベクターデータベースサポート</span
+                      >
                     </div>
                     <div class="feature-item">
                       <span class="feature-icon">📊</span>
-                      <span>性能分析工具</span>
+                      <span class="lang-content lang-zh active"
+                        >性能分析工具</span
+                      >
+                      <span class="lang-content lang-en"
+                        >Performance Analysis Tools</span
+                      >
+                      <span class="lang-content lang-ja"
+                        >パフォーマンス分析ツール</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -1412,7 +1842,11 @@
           </section>
 
           <section class="section" id="contact">
-            <h2 class="section-title">联系我们</h2>
+            <h2 class="section-title">
+              <span class="lang-content lang-zh active">联系我们</span>
+              <span class="lang-content lang-en">Contact Us</span>
+              <span class="lang-content lang-ja">お問い合わせ</span>
+            </h2>
             <div class="contact-container">
               <a
                 href="https://github.com/RushDB-Lab"
@@ -1422,11 +1856,31 @@
                 <div class="contact-info">
                   <div class="contact-header">
                     <div class="contact-icon">💬</div>
-                    <h3 class="contact-subtitle">加入我们的旅程</h3>
+                    <h3 class="contact-subtitle">
+                      <span class="lang-content lang-zh active"
+                        >加入我们的旅程</span
+                      >
+                      <span class="lang-content lang-en">Join Our Journey</span>
+                      <span class="lang-content lang-ja"
+                        >私たちの旅に参加しませんか</span
+                      >
+                    </h3>
                   </div>
                   <p class="contact-text">
-                    对 <strong>RushDB</strong> 感兴趣？想加入我们或寻求合作？
-                    我们欢迎所有对数据库技术充满热情的伙伴！
+                    <span class="lang-content lang-zh active">
+                      对 <strong>RushDB</strong> 感兴趣？想加入我们或寻求合作？
+                      我们欢迎所有对数据库技术充满热情的伙伴！
+                    </span>
+                    <span class="lang-content lang-en">
+                      Interested in <strong>RushDB</strong>? Want to join us or
+                      seek collaboration? We welcome all partners who are
+                      passionate about database technology!
+                    </span>
+                    <span class="lang-content lang-ja">
+                      <strong>RushDB</strong
+                      >に興味がありますか？参加や協力をお考えですか？
+                      データベース技術に情熱を持つすべてのパートナーを歓迎します！
+                    </span>
                   </p>
                   <div class="contact-methods">
                     <div class="contact-social">
@@ -1450,7 +1904,15 @@
                               d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
                             />
                           </svg>
-                          点击访问我们的 GitHub
+                          <span class="lang-content lang-zh active"
+                            >点击访问我们的 GitHub</span
+                          >
+                          <span class="lang-content lang-en"
+                            >Click to visit our GitHub</span
+                          >
+                          <span class="lang-content lang-ja"
+                            >GitHubにアクセス</span
+                          >
                         </span>
                       </div>
                     </div>
@@ -1471,6 +1933,91 @@
     </div>
 
     <script>
+      // 语言切换功能
+      let currentLang = "zh";
+
+      // 切换语言切换器显示/隐藏
+      function toggleLanguageSwitcher() {
+        const switcher = document.getElementById("languageSwitcher");
+        switcher.classList.toggle("show");
+      }
+
+      // 隐藏语言切换器
+      function hideLanguageSwitcher() {
+        document.getElementById("languageSwitcher").classList.remove("show");
+      }
+
+      // 修改现有的switchLanguage函数
+      function switchLanguage(lang) {
+        currentLang = lang;
+
+        // 更新触发按钮文本
+        const triggerBtn = document.querySelector(".language-trigger");
+        const langNames = {
+          zh: "中文",
+          en: "English",
+          ja: "日本語",
+        };
+        triggerBtn.textContent = langNames[lang];
+
+        // 更新下拉选项的激活状态
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.remove("active");
+          if (btn.dataset.lang === lang) {
+            btn.classList.add("active");
+          }
+        });
+
+        // 隐藏下拉菜单
+        hideLanguageSwitcher();
+
+        // 更新HTML lang属性
+        document.documentElement.lang =
+          lang === "zh" ? "zh-CN" : lang === "en" ? "en-US" : "ja-JP";
+
+        // 更新页面标题
+        const titles = {
+          zh: "RushDB - 无限进步",
+          en: "RushDB - Unlimited Progress",
+          ja: "RushDB - 無限の進歩",
+        };
+        document.title = titles[lang];
+
+        // 隐藏所有语言内容
+        document.querySelectorAll(".lang-content").forEach((el) => {
+          el.classList.remove("active");
+        });
+
+        // 显示当前语言内容
+        document.querySelectorAll(`.lang-${lang}`).forEach((el) => {
+          el.classList.add("active");
+        });
+
+        // 保存语言选择到localStorage
+        localStorage.setItem("rushdb-language", lang);
+      }
+
+      // 初始化语言
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedLang = localStorage.getItem("rushdb-language") || "zh";
+        switchLanguage(savedLang);
+
+        // 点击外部关闭下拉菜单
+        document.addEventListener("click", function (event) {
+          const switcher = document.getElementById("languageSwitcher");
+          if (!switcher.contains(event.target)) {
+            hideLanguageSwitcher();
+          }
+        });
+
+        // ESC键关闭
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            hideLanguageSwitcher();
+          }
+        });
+      });
+
       // 平滑滚动
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
@@ -1486,13 +2033,15 @@
       });
 
       // 平滑滚动到顶部
-      document.querySelector('.nav-logo').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+      document
+        .querySelector(".nav-logo")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         });
-      });
 
       // 滚动时导航栏效果
       window.addEventListener("scroll", () => {
