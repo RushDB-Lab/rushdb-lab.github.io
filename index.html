@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -2604,6 +2604,50 @@
     <script>
       let currentLang = "zh";
 
+      function detectLanguageByLocation() {
+        return new Promise((resolve) => {
+          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          if (
+            timezone.includes("Asia/Shanghai") ||
+            timezone.includes("Asia/Beijing") ||
+            timezone.includes("Asia/Chongqing") ||
+            timezone.includes("Asia/Harbin") ||
+            timezone.includes("Asia/Kashgar") ||
+            timezone.includes("Asia/Urumqi")
+          ) {
+            resolve("zh");
+            return;
+          }
+
+          // 日本时区
+          if (timezone.includes("Asia/Tokyo")) {
+            resolve("ja");
+            return;
+          }
+
+          // 韩国时区
+          if (timezone.includes("Asia/Seoul")) {
+            resolve("ja");
+            return;
+          }
+
+          // 尝试通过浏览器语言检测
+          const browserLang = navigator.language || navigator.languages[0];
+
+          if (browserLang.startsWith("zh")) {
+            resolve("zh");
+          } else if (
+            browserLang.startsWith("ja") ||
+            browserLang.startsWith("ko")
+          ) {
+            resolve("ja");
+          } else {
+            resolve("en");
+          }
+        });
+      }
+
       function toggleLanguageSwitcher() {
         const switcher = document.getElementById("languageSwitcher");
         switcher.classList.toggle("show");
@@ -2654,9 +2698,20 @@
         localStorage.setItem("rushdb-language", lang);
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const savedLang = localStorage.getItem("rushdb-language") || "zh";
-        switchLanguage(savedLang);
+      document.addEventListener("DOMContentLoaded", async function () {
+        // 检查是否已有保存的语言设置
+        const savedLang = localStorage.getItem("rushdb-language");
+
+        let selectedLang;
+        if (savedLang) {
+          // 如果用户之前已经选择过语言，使用保存的设置
+          selectedLang = savedLang;
+        } else {
+          // 如果是首次访问，根据地理位置自动选择语言
+          selectedLang = await detectLanguageByLocation();
+        }
+
+        switchLanguage(selectedLang);
 
         document.addEventListener("click", function (event) {
           const switcher = document.getElementById("languageSwitcher");
