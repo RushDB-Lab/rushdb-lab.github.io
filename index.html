@@ -278,7 +278,9 @@
 
       .hero-title .lang-content.lang-en {
         font-size: clamp(2.2rem, 6.5vw, 5rem);
-        white-space: nowrap;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        hyphens: auto;
       }
 
       @media (max-width: 1200px) {
@@ -2212,6 +2214,14 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-shadow: 0 0 28px rgba(34, 211, 238, 0.18);
+        font-size: inherit;
+        white-space: normal;
+      }
+
+      .hero-title .lang-content.lang-en {
+        overflow-wrap: anywhere;
+        word-break: normal;
+        hyphens: auto;
       }
 
       .hero-subtitle {
