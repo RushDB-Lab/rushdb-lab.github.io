@@ -1704,6 +1704,299 @@
       .lang-content.active.grid {
         display: grid;
       }
+
+      :root {
+        --bg-primary: #050712;
+        --bg-secondary: rgba(8, 12, 28, 0.85);
+        --bg-card: rgba(12, 17, 42, 0.72);
+        --text-primary: rgba(234, 242, 255, 0.95);
+        --text-secondary: rgba(234, 242, 255, 0.72);
+        --text-muted: rgba(234, 242, 255, 0.5);
+        --accent-primary: #22d3ee;
+        --accent-secondary: #a855f7;
+        --accent-gradient: linear-gradient(
+          135deg,
+          #22d3ee 0%,
+          #a855f7 55%,
+          #60a5fa 100%
+        );
+        --border-color: rgba(234, 242, 255, 0.14);
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+        --shadow-lg: 0 28px 110px rgba(0, 0, 0, 0.55);
+      }
+
+      body {
+        background: var(--bg-primary);
+      }
+
+      body::before {
+        background: radial-gradient(
+            900px circle at 15% 20%,
+            rgba(34, 211, 238, 0.14) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            900px circle at 80% 70%,
+            rgba(168, 85, 247, 0.14) 0%,
+            transparent 55%
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(234, 242, 255, 0.04) 0px,
+            rgba(234, 242, 255, 0.04) 1px,
+            transparent 1px,
+            transparent 64px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            rgba(234, 242, 255, 0.03) 0px,
+            rgba(234, 242, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 64px
+          );
+        opacity: 0.9;
+        filter: saturate(1.15);
+      }
+
+      body::after {
+        background: radial-gradient(
+            520px circle at var(--mx, 50vw) var(--my, 30vh),
+            rgba(34, 211, 238, 0.22) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            520px circle at calc(var(--mx, 50vw) + 12vw) calc(var(--my, 30vh) + 8vh),
+            rgba(168, 85, 247, 0.18) 0%,
+            transparent 65%
+          ),
+          linear-gradient(
+            45deg,
+            rgba(34, 211, 238, 0.16) 0%,
+            rgba(168, 85, 247, 0.14) 33%,
+            rgba(96, 165, 250, 0.12) 66%,
+            rgba(34, 211, 238, 0.16) 100%
+          );
+        opacity: 0.45;
+        filter: blur(0.2px);
+      }
+
+      .navbar {
+        background: rgba(5, 7, 18, 0.72);
+        border-bottom: 1px solid rgba(234, 242, 255, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      .nav-logo {
+        background: linear-gradient(90deg, #22d3ee 0%, #60a5fa 40%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero {
+        padding-top: 7.5rem;
+      }
+
+      .hero-title {
+        letter-spacing: -0.02em;
+        text-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
+      }
+
+      .hero-subtitle {
+        color: var(--text-secondary);
+      }
+
+      .cta-button {
+        background: linear-gradient(135deg, #22d3ee, #a855f7, #60a5fa);
+        background-size: 240% 240%;
+      }
+
+      .main-content {
+        background: rgba(8, 12, 28, 0.68);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(234, 242, 255, 0.1);
+      }
+
+      .main-content::after {
+        background: linear-gradient(
+          45deg,
+          #22d3ee,
+          #60a5fa,
+          #a855f7,
+          #22d3ee
+        );
+        background-size: 260% 260%;
+      }
+
+      .section-title {
+        padding-bottom: 1.1rem;
+      }
+
+      .section-title::after {
+        display: block;
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 110px;
+        height: 2px;
+        background: var(--accent-gradient);
+        border-radius: 999px;
+        box-shadow: 0 0 25px rgba(34, 211, 238, 0.22);
+      }
+
+      .member-card,
+      .achievement-item,
+      .project-item,
+      .news-item,
+      .contact-info,
+      .intro-container {
+        background: var(--bg-card);
+        border-color: rgba(234, 242, 255, 0.12);
+        backdrop-filter: blur(16px);
+      }
+
+      .member-card:hover,
+      .achievement-item:hover,
+      .project-item:hover,
+      .news-item:hover,
+      .contact-info:hover {
+        box-shadow: 0 26px 60px rgba(0, 0, 0, 0.55),
+          0 0 0 1px rgba(34, 211, 238, 0.24),
+          0 0 60px rgba(168, 85, 247, 0.12);
+      }
+
+      .member-avatar {
+        box-shadow: 0 10px 30px rgba(34, 211, 238, 0.25);
+      }
+
+      .stat-number {
+        color: var(--accent-primary);
+      }
+
+      .language-trigger {
+        background: rgba(234, 242, 255, 0.04);
+        border: 1px solid rgba(234, 242, 255, 0.1);
+      }
+
+      .language-dropdown {
+        background: rgba(8, 12, 28, 0.9);
+        border-color: rgba(234, 242, 255, 0.14);
+      }
+
+      .nav-toggle {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(234, 242, 255, 0.05);
+        border: 1px solid rgba(234, 242, 255, 0.12);
+        color: var(--text-primary);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .nav-toggle:hover {
+        transform: translateY(-1px);
+        background: rgba(234, 242, 255, 0.08);
+        border-color: rgba(34, 211, 238, 0.25);
+      }
+
+      .nav-toggle-bars {
+        width: 18px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 999px;
+        position: relative;
+        transition: background 0.2s ease;
+      }
+
+      .nav-toggle-bars::before,
+      .nav-toggle-bars::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 18px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 999px;
+        transition: transform 0.25s ease;
+      }
+
+      .nav-toggle-bars::before {
+        transform: translateY(-6px);
+      }
+
+      .nav-toggle-bars::after {
+        transform: translateY(6px);
+      }
+
+      .navbar.menu-open .nav-toggle-bars {
+        background: transparent;
+      }
+
+      .navbar.menu-open .nav-toggle-bars::before {
+        transform: translateY(0) rotate(45deg);
+      }
+
+      .navbar.menu-open .nav-toggle-bars::after {
+        transform: translateY(0) rotate(-45deg);
+      }
+
+      @media (max-width: 768px) {
+        .nav-toggle {
+          display: inline-flex;
+        }
+
+        .nav-links {
+          display: flex;
+          position: fixed;
+          top: 80px;
+          left: 12px;
+          right: 12px;
+          padding: 10px;
+          gap: 0.25rem;
+          flex-direction: column;
+          background: rgba(8, 12, 28, 0.86);
+          border: 1px solid rgba(234, 242, 255, 0.12);
+          border-radius: 16px;
+          backdrop-filter: blur(20px);
+          transform: translateY(-10px);
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .navbar.menu-open .nav-links {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+
+        .nav-links a {
+          display: block;
+          padding: 12px 14px;
+          border-radius: 12px;
+          background: rgba(234, 242, 255, 0.03);
+          border: 1px solid rgba(234, 242, 255, 0.06);
+        }
+
+        .nav-links a:hover {
+          background: rgba(34, 211, 238, 0.08);
+          border-color: rgba(34, 211, 238, 0.22);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
     </style>
   </head>
 
@@ -1715,6 +2008,14 @@
           <span>&ensp;RushDB</span>
         </a>
         <div style="display: flex; align-items: center; gap: 2rem">
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-label="打开菜单"
+            onclick="toggleNavMenu()"
+          >
+            <span class="nav-toggle-bars" aria-hidden="true"></span>
+          </button>
           <ul class="nav-links">
             <li>
               <a href="#about" class="lang-content lang-zh active">关于我们</a
@@ -1788,6 +2089,11 @@
     <section class="hero">
       <div class="container">
         <div class="hero-content">
+          <div class="logo-container" aria-hidden="true">
+            <div class="logo">
+              <img src="RushDB.png" alt="RushDB Logo" />
+            </div>
+          </div>
           <h1 class="hero-title">
             <span class="lang-content lang-zh active">RushDB，无限进步</span>
             <span class="lang-content lang-en">RushDB, Unlimited Progress</span>
@@ -2723,6 +3029,7 @@
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape") {
             hideLanguageSwitcher();
+            closeNavMenu();
           }
         });
       });
@@ -2732,6 +3039,7 @@
           e.preventDefault();
           const target = document.querySelector(this.getAttribute("href"));
           if (target) {
+            closeNavMenu();
             target.scrollIntoView({
               behavior: "smooth",
               block: "start",
@@ -2753,10 +3061,34 @@
       window.addEventListener("scroll", () => {
         const navbar = document.querySelector(".navbar");
         if (window.scrollY > 100) {
-          navbar.style.background = "rgba(10, 10, 10, 0.95)";
+          navbar.style.background = "rgba(5, 7, 18, 0.82)";
         } else {
-          navbar.style.background = "rgba(10, 10, 10, 0.9)";
+          navbar.style.background = "rgba(5, 7, 18, 0.72)";
         }
+      });
+
+      function toggleNavMenu() {
+        const navbar = document.querySelector(".navbar");
+        navbar.classList.toggle("menu-open");
+      }
+
+      function closeNavMenu() {
+        document.querySelector(".navbar").classList.remove("menu-open");
+      }
+
+      let pointerRaf = null;
+      window.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") {
+          return;
+        }
+        if (pointerRaf !== null) {
+          return;
+        }
+        pointerRaf = window.requestAnimationFrame(() => {
+          document.body.style.setProperty("--mx", `${event.clientX}px`);
+          document.body.style.setProperty("--my", `${event.clientY}px`);
+          pointerRaf = null;
+        });
       });
 
       const observerOptions = {
@@ -2774,7 +3106,9 @@
       }, observerOptions);
 
       document
-        .querySelectorAll(".member-card, .achievement-item, .project-item")
+        .querySelectorAll(
+          ".member-card, .achievement-item, .project-item, .news-item, .contact-info, .intro-container"
+        )
         .forEach((el) => {
           observer.observe(el);
         });
@@ -2788,6 +3122,21 @@
         card.addEventListener("mouseleave", function () {
           this.style.zIndex = "1";
         });
+      });
+
+      document.addEventListener("click", function (event) {
+        const navbar = document.querySelector(".navbar");
+        const toggle = document.querySelector(".nav-toggle");
+        if (!navbar.classList.contains("menu-open")) {
+          return;
+        }
+        if (toggle && toggle.contains(event.target)) {
+          return;
+        }
+        if (navbar.contains(event.target)) {
+          return;
+        }
+        closeNavMenu();
       });
     </script>
   </body>
