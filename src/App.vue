@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import AboutSection from "./sections/AboutSection.vue";
 import AchievementsSection from "./sections/AchievementsSection.vue";
@@ -9,16 +10,21 @@ import MembersSection from "./sections/MembersSection.vue";
 import NewsSection from "./sections/NewsSection.vue";
 import ProjectsSection from "./sections/ProjectsSection.vue";
 
-type Lang = "zh" | "en" | "ja";
+import type { Lang } from "./i18n";
 
-const currentLang = ref<Lang>("zh");
+const { t, locale } = useI18n({ useScope: "global" });
+
+const currentLang = computed<Lang>({
+  get: () => locale.value as Lang,
+  set: (lang) => {
+    locale.value = lang;
+  },
+});
 const isLanguageOpen = ref(false);
 const isMenuOpen = ref(false);
 
 const languageLabel = computed(() => {
-  if (currentLang.value === "zh") return "🇨🇳 中文";
-  if (currentLang.value === "ja") return "🇯🇵 日本語";
-  return "🇬🇧 English";
+  return t(`language.${currentLang.value}`);
 });
 
 const scrollProgress = ref(0);
@@ -44,7 +50,7 @@ function closeNavMenu() {
   isMenuOpen.value = false;
 }
 
-function applyLanguageDom(lang: Lang) {
+function applyLocaleDom(lang: Lang) {
   document.documentElement.lang = lang === "zh" ? "zh-CN" : lang === "en" ? "en-US" : "ja-JP";
 
   const titles: Record<Lang, string> = {
@@ -53,14 +59,6 @@ function applyLanguageDom(lang: Lang) {
     ja: "RushDB - 無限の進歩",
   };
   document.title = titles[lang];
-
-  document.querySelectorAll<HTMLElement>(".lang-btn").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.lang === lang);
-  });
-
-  document.querySelectorAll<HTMLElement>(".lang-content").forEach((el) => {
-    el.classList.toggle("active", el.classList.contains(`lang-${lang}`));
-  });
 }
 
 async function detectLanguageByLocation(): Promise<Lang> {
@@ -91,7 +89,6 @@ function switchLanguage(lang: Lang) {
   currentLang.value = lang;
   hideLanguageSwitcher();
   localStorage.setItem("rushdb-language", lang);
-  applyLanguageDom(lang);
 }
 
 function updateScrollEffects() {
@@ -202,6 +199,14 @@ onMounted(async () => {
   setupMemberCardHoverZIndex();
 });
 
+watch(
+  () => currentLang.value,
+  (lang) => {
+    applyLocaleDom(lang);
+  },
+  { immediate: true }
+);
+
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
   window.removeEventListener("pointermove", onPointerMove);
@@ -221,49 +226,46 @@ onUnmounted(() => {
         <span>&ensp;RushDB</span>
       </a>
       <div style="display: flex; align-items: center; gap: 2rem">
-        <button class="nav-toggle" type="button" aria-label="打开菜单" @click="toggleNavMenu">
+        <button class="nav-toggle" type="button" :aria-label="t('nav.openMenu')" @click="toggleNavMenu">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
         <ul class="nav-links">
           <li>
-            <a href="#about" class="lang-content lang-zh active">关于我们</a><a href="#about" class="lang-content lang-en">About Us</a
-            ><a href="#about" class="lang-content lang-ja">私たちについて</a>
+            <a href="#about">{{ t("nav.about") }}</a>
           </li>
           <li>
-            <a href="#achievements" class="lang-content lang-zh active">竞赛成就</a
-            ><a href="#achievements" class="lang-content lang-en">Achievements</a
-            ><a href="#achievements" class="lang-content lang-ja">競技成果</a>
+            <a href="#achievements">{{ t("nav.achievements") }}</a>
           </li>
           <li>
-            <a href="#projects" class="lang-content lang-zh active">项目作品</a><a href="#projects" class="lang-content lang-en">Projects</a
-            ><a href="#projects" class="lang-content lang-ja">プロジェクト</a>
+            <a href="#projects">{{ t("nav.projects") }}</a>
           </li>
           <li>
-            <a href="#members" class="lang-content lang-zh active">团队成员</a><a href="#members" class="lang-content lang-en">Team Members</a
-            ><a href="#members" class="lang-content lang-ja">チームメンバー</a>
+            <a href="#members">{{ t("nav.members") }}</a>
           </li>
           <li>
-            <a href="#news" class="lang-content lang-zh active">相关报道</a><a href="#news" class="lang-content lang-en">Related News</a
-            ><a href="#news" class="lang-content lang-ja">関連報道</a>
+            <a href="#news">{{ t("nav.news") }}</a>
           </li>
           <li>
-            <a href="#contact" class="lang-content lang-zh active">联系我们</a><a href="#contact" class="lang-content lang-en">Contact Us</a
-            ><a href="#contact" class="lang-content lang-ja">お問い合わせ</a>
+            <a href="#contact">{{ t("nav.contact") }}</a>
           </li>
         </ul>
 
         <div class="language-switcher" :class="{ show: isLanguageOpen }">
           <div class="language-trigger" @click="toggleLanguageSwitcher">{{ languageLabel }}</div>
           <div class="language-dropdown">
-            <button class="lang-btn active" data-lang="zh" @click="switchLanguage('zh')">🇨🇳 中文</button>
-            <button class="lang-btn" data-lang="en" @click="switchLanguage('en')">🇬🇧 English</button>
-            <button class="lang-btn" data-lang="ja" @click="switchLanguage('ja')">🇯🇵 日本語</button>
+            <button class="lang-btn" :class="{ active: currentLang === 'zh' }" data-lang="zh" @click="switchLanguage('zh')">
+              {{ t("language.zh") }}
+            </button>
+            <button class="lang-btn" :class="{ active: currentLang === 'en' }" data-lang="en" @click="switchLanguage('en')">
+              {{ t("language.en") }}
+            </button>
+            <button class="lang-btn" :class="{ active: currentLang === 'ja' }" data-lang="ja" @click="switchLanguage('ja')">
+              {{ t("language.ja") }}
+            </button>
           </div>
         </div>
         <a class="nav-cta" href="https://github.com/RushDB-Lab" target="_blank" rel="noopener noreferrer">
-          <span class="lang-content lang-zh active inline">GitHub</span>
-          <span class="lang-content lang-en inline">GitHub</span>
-          <span class="lang-content lang-ja inline">GitHub</span>
+          {{ t("nav.github") }}
         </a>
       </div>
     </div>
@@ -285,7 +287,7 @@ onUnmounted(() => {
 
     <footer class="footer">
       <div class="footer-content">
-        <p class="copyright">© 2025 RushDB. All Rights Reserved.</p>
+        <p class="copyright">{{ t("footer.copyright") }}</p>
       </div>
     </footer>
   </div>
