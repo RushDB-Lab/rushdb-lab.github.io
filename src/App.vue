@@ -225,7 +225,7 @@ onUnmounted(() => {
         <img src="/RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
         <span>&ensp;RushDB</span>
       </a>
-      <div style="display: flex; align-items: center; gap: 2rem">
+      <div class="nav-actions">
         <button class="nav-toggle" type="button" :aria-label="t('nav.openMenu')" @click="toggleNavMenu">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
