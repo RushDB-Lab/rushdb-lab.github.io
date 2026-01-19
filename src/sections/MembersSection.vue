@@ -10,7 +10,7 @@ const { t } = useI18n({ useScope: "global" });
       {{ t("members.title") }}
     </h2>
     <div class="members-grid">
-      <a href="https://mmmttt000045.github.io" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a href="https://mmmttt000045.github.io" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
             <img src="/MingTai.png" alt="明泰" class="avatar-img" />
@@ -39,7 +39,7 @@ const { t } = useI18n({ useScope: "global" });
         </div>
       </a>
 
-      <a href="https://huxin0817.github.io/" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a href="https://huxin0817.github.io/" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
             <img src="/HuXin.png" alt="胡鑫" class="avatar-img" />
@@ -68,7 +68,7 @@ const { t } = useI18n({ useScope: "global" });
         </div>
       </a>
 
-      <a href="https://koschei.top/" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a href="https://koschei.top/" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
             <img src="/WuYiMin.png" alt="吴奕民" class="avatar-img" />

@@ -10,7 +10,12 @@ const { t } = useI18n({ useScope: "global" });
       {{ t("news.title") }}
     </h2>
     <div class="news-container">
-      <a href="https://www.aao.cdut.edu.cn/info/1442/6588.htm" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a
+        href="https://www.aao.cdut.edu.cn/info/1442/6588.htm"
+        class="card-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <div class="news-item">
           <div class="news-header">
             <div class="news-icon">📰</div>
@@ -40,8 +45,9 @@ const { t } = useI18n({ useScope: "global" });
 
       <a
         href="https://finance.sina.cn/2025-01-13/detail-ineevenv2707541.d.html"
+        class="card-link"
         target="_blank"
-        style="color: inherit; text-decoration: none; display: block"
+        rel="noopener noreferrer"
       >
         <div class="news-item">
           <div class="news-header">
@@ -74,8 +80,9 @@ const { t } = useI18n({ useScope: "global" });
 
       <a
         href="https://www.bilibili.com/opus/1035584488471527457?spm_id_from=333.1387.0.0"
+        class="card-link"
         target="_blank"
-        style="color: inherit; text-decoration: none; display: block"
+        rel="noopener noreferrer"
       >
         <div class="news-item">
           <div class="news-header">

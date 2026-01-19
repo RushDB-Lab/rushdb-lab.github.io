@@ -12,9 +12,9 @@ const { t } = useI18n({ useScope: "global" });
     <div class="achievements">
       <a
         href="https://os.educg.net/#/index?TYPE=2025DB"
+        class="card-link"
         target="_blank"
         rel="noopener noreferrer"
-        style="color: inherit; text-decoration: none; display: block"
       >
         <div class="achievement-item featured">
           <div class="achievement-badge">🥇</div>
@@ -32,7 +32,12 @@ const { t } = useI18n({ useScope: "global" });
         </div>
       </a>
 
-      <a href="https://open.oceanbase.com/competition#armory" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a
+        href="https://open.oceanbase.com/competition#armory"
+        class="card-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <div class="achievement-item featured">
           <div class="achievement-badge">🏆</div>
           <div class="achievement-content">
@@ -51,8 +56,9 @@ const { t } = useI18n({ useScope: "global" });
 
       <a
         href="https://os.educg.net/#/oldDetail?name=2024%E5%B9%B4%E5%85%A8%E5%9B%BD%E5%A4%A7%E5%AD%A6%E7%94%9F%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E8%83%BD%E5%8A%9B%E5%A4%A7%E8%B5%9B-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E8%B5%9B"
+        class="card-link"
         target="_blank"
-        style="color: inherit; text-decoration: none; display: block"
+        rel="noopener noreferrer"
       >
         <div class="achievement-item featured">
           <div class="achievement-badge">🥇</div>

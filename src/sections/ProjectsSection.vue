@@ -10,11 +10,16 @@ const { t } = useI18n({ useScope: "global" });
       {{ t("projects.title") }}
     </h2>
     <div class="projects-grid">
-      <a href="https://github.com/RushDB-Lab/miniob-RushDB" target="_blank" style="color: inherit; text-decoration: none; display: block">
+      <a
+        href="https://github.com/RushDB-Lab/miniob-RushDB"
+        class="card-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <div class="project-item featured-project">
           <div class="project-header">
             <div class="project-icon">
-              <img src="/miniob.png" alt="MiniOB" style="width: 40px; height: 40px; object-fit: contain" />
+              <img src="/miniob.png" alt="MiniOB" />
             </div>
             <div class="project-meta">
               <div class="project-title">
