@@ -144,7 +144,7 @@ const messages = {
       qrHint: "扫码关注，获取最新动态",
     },
     footer: {
-      copyright: "© 2025 RushDB. All Rights Reserved.",
+      copyright: "© 2024-{year} RushDB. All Rights Reserved.",
     },
     language: {
       zh: "🇨🇳 中文",
@@ -293,7 +293,7 @@ const messages = {
       qrHint: "Scan to follow for updates",
     },
     footer: {
-      copyright: "© 2025 RushDB. All Rights Reserved.",
+      copyright: "© 2024-{year} RushDB. All Rights Reserved.",
     },
     language: {
       zh: "🇨🇳 中文",
@@ -442,7 +442,7 @@ const messages = {
       qrHint: "QRコードでフォローして最新情報を入手",
     },
     footer: {
-      copyright: "© 2025 RushDB. All Rights Reserved.",
+      copyright: "© 2024 - {year} RushDB. All Rights Reserved.",
     },
     language: {
       zh: "🇨🇳 中文",

@@ -14,6 +14,8 @@ import type { Lang } from "./i18n";
 
 const { t, locale } = useI18n({ useScope: "global" });
 
+const currentYear = new Date().getFullYear();
+
 const currentLang = computed<Lang>({
   get: () => locale.value as Lang,
   set: (lang) => {
@@ -288,7 +290,7 @@ onUnmounted(() => {
     <footer class="footer">
       <div class="footer-content">
         <p class="copyright">
-          <span>{{ t("footer.copyright") }}</span>
+          <span>{{ t("footer.copyright", { year: currentYear }) }}</span>
           <span class="footer-divider" aria-hidden="true"> · </span>
           <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">蜀ICP备2023035054号-3</a>
         </p>
