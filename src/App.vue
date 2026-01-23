@@ -287,7 +287,11 @@ onUnmounted(() => {
 
     <footer class="footer">
       <div class="footer-content">
-        <p class="copyright">{{ t("footer.copyright") }}</p>
+        <p class="copyright">
+          <span>{{ t("footer.copyright") }}</span>
+          <span class="footer-divider" aria-hidden="true"> · </span>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">蜀ICP备2023035054号-3</a>
+        </p>
       </div>
     </footer>
   </div>
