@@ -31,10 +31,13 @@ const languageLabel = computed(() => {
 
 const scrollProgress = ref(0);
 const navbarBg = ref("rgba(5, 7, 18, 0.72)");
+const showBackToTop = ref(false);
+const activeSection = ref("");
 
 let scrollRaf: number | null = null;
 let pointerRaf: number | null = null;
 let sectionObserver: IntersectionObserver | null = null;
+let navHighlightObserver: IntersectionObserver | null = null;
 
 function ensureBusuanziScriptLoaded() {
   const scriptId = "busuanzi-script";
@@ -106,6 +109,7 @@ function switchLanguage(lang: Lang) {
 
 function updateScrollEffects() {
   navbarBg.value = window.scrollY > 100 ? "rgba(5, 7, 18, 0.82)" : "rgba(5, 7, 18, 0.72)";
+  showBackToTop.value = window.scrollY > 300;
 
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   scrollProgress.value = maxScroll > 0 ? window.scrollY / maxScroll : 0;
@@ -195,6 +199,29 @@ function setupMemberCardHoverZIndex() {
   });
 }
 
+function setupNavHighlightObserver() {
+  const sections = ["about", "achievements", "projects", "members", "news", "contact"];
+
+  navHighlightObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id;
+        }
+      });
+    },
+    {
+      threshold: 0.3,
+      rootMargin: "-80px 0px -50% 0px",
+    }
+  );
+
+  sections.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) navHighlightObserver?.observe(el);
+  });
+}
+
 onMounted(async () => {
   document.documentElement.classList.add("js");
 
@@ -210,6 +237,7 @@ onMounted(async () => {
 
   setupSectionObserver();
   setupMemberCardHoverZIndex();
+  setupNavHighlightObserver();
   ensureBusuanziScriptLoaded();
 });
 
@@ -228,12 +256,15 @@ onUnmounted(() => {
   document.removeEventListener("click", onDocumentClick);
   sectionObserver?.disconnect();
   sectionObserver = null;
+  navHighlightObserver?.disconnect();
+  navHighlightObserver = null;
 });
 </script>
 
 <template>
-  <div class="scroll-progress" :style="{ transform: `scaleX(${scrollProgress})` }"></div>
-  <nav class="navbar" :class="{ 'menu-open': isMenuOpen }" :style="{ background: navbarBg }">
+  <a href="#main-content" class="skip-link">{{ t('a11y.skipToContent') }}</a>
+  <div class="scroll-progress" :style="{ transform: `scaleX(${scrollProgress})` }" role="progressbar" :aria-valuenow="Math.round(scrollProgress * 100)" aria-valuemin="0" aria-valuemax="100" :aria-label="t('a11y.scrollProgress')"></div>
+  <nav class="navbar" :class="{ 'menu-open': isMenuOpen }" :style="{ background: navbarBg }" role="navigation" :aria-label="t('a11y.mainNavigation')">
     <div class="nav-content">
       <a href="#" class="nav-logo" @click.prevent="scrollToTop">
         <img src="/RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
@@ -245,22 +276,22 @@ onUnmounted(() => {
         </button>
         <ul class="nav-links">
           <li>
-            <a href="#about">{{ t("nav.about") }}</a>
+            <a href="#about" :class="{ active: activeSection === 'about' }">{{ t("nav.about") }}</a>
           </li>
           <li>
-            <a href="#achievements">{{ t("nav.achievements") }}</a>
+            <a href="#achievements" :class="{ active: activeSection === 'achievements' }">{{ t("nav.achievements") }}</a>
           </li>
           <li>
-            <a href="#projects">{{ t("nav.projects") }}</a>
+            <a href="#projects" :class="{ active: activeSection === 'projects' }">{{ t("nav.projects") }}</a>
           </li>
           <li>
-            <a href="#members">{{ t("nav.members") }}</a>
+            <a href="#members" :class="{ active: activeSection === 'members' }">{{ t("nav.members") }}</a>
           </li>
           <li>
-            <a href="#news">{{ t("nav.news") }}</a>
+            <a href="#news" :class="{ active: activeSection === 'news' }">{{ t("nav.news") }}</a>
           </li>
           <li>
-            <a href="#contact">{{ t("nav.contact") }}</a>
+            <a href="#contact" :class="{ active: activeSection === 'contact' }">{{ t("nav.contact") }}</a>
           </li>
         </ul>
 
@@ -288,7 +319,7 @@ onUnmounted(() => {
   <HeroSection />
 
   <div class="container">
-    <main class="main-content">
+    <main id="main-content" class="main-content" role="main">
       <div class="content-inner">
         <AboutSection />
         <AchievementsSection />
@@ -349,4 +380,17 @@ onUnmounted(() => {
       </div>
     </footer>
   </div>
+
+  <!-- Back to Top Button -->
+  <button
+    v-show="showBackToTop"
+    class="back-to-top"
+    type="button"
+    :aria-label="t('a11y.backToTop')"
+    @click="scrollToTop"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
 </template>

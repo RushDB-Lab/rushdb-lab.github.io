@@ -13,7 +13,7 @@ const { t } = useI18n({ useScope: "global" });
       <a href="https://mmmttt000045.github.io" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
-            <img src="/MingTai.png" alt="明泰" class="avatar-img" />
+            <img src="/MingTai.png" alt="明泰" class="avatar-img" loading="lazy" decoding="async" />
           </div>
           <div class="member-name">
             {{ t("members.mingTai.name") }}
@@ -42,7 +42,7 @@ const { t } = useI18n({ useScope: "global" });
       <a href="https://huxin0817.github.io/" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
-            <img src="/HuXin.png" alt="胡鑫" class="avatar-img" />
+            <img src="/HuXin.png" alt="胡鑫" class="avatar-img" loading="lazy" decoding="async" />
           </div>
           <div class="member-name">
             {{ t("members.huXin.name") }}
@@ -71,7 +71,7 @@ const { t } = useI18n({ useScope: "global" });
       <a href="https://koschei.top/" class="card-link" target="_blank" rel="noopener noreferrer">
         <div class="member-card">
           <div class="member-avatar">
-            <img src="/WuYiMin.png" alt="吴奕民" class="avatar-img" />
+            <img src="/WuYiMin.png" alt="吴奕民" class="avatar-img" loading="lazy" decoding="async" />
           </div>
           <div class="member-name">
             {{ t("members.wuYiMin.name") }}

@@ -151,6 +151,12 @@ const messages = {
       en: "🇬🇧 English",
       ja: "🇯🇵 日本語",
     },
+    a11y: {
+      skipToContent: "跳转到主要内容",
+      scrollProgress: "页面滚动进度",
+      mainNavigation: "主导航",
+      backToTop: "返回顶部",
+    },
   },
   en: {
     nav: {
@@ -300,6 +306,12 @@ const messages = {
       en: "🇬🇧 English",
       ja: "🇯🇵 日本語",
     },
+    a11y: {
+      skipToContent: "Skip to main content",
+      scrollProgress: "Page scroll progress",
+      mainNavigation: "Main navigation",
+      backToTop: "Back to top",
+    },
   },
   ja: {
     nav: {
@@ -448,6 +460,12 @@ const messages = {
       zh: "🇨🇳 中文",
       en: "🇬🇧 English",
       ja: "🇯🇵 日本語",
+    },
+    a11y: {
+      skipToContent: "メインコンテンツへスキップ",
+      scrollProgress: "ページスクロール進捗",
+      mainNavigation: "メインナビゲーション",
+      backToTop: "トップへ戻る",
     },
   },
 } as const;
