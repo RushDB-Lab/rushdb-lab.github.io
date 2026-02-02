@@ -154,10 +154,9 @@ onUnmounted(() => {
         <img src="/RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
         <span>&ensp;RushDB</span>
       </a>
-      <div class="nav-actions">
-        <button class="nav-toggle" type="button" :aria-label="t('nav.openMenu')" @click="toggleNavMenu">
-          <span class="nav-toggle-bars" aria-hidden="true"></span>
-        </button>
+
+      <!-- Desktop navigation -->
+      <div class="nav-actions nav-desktop">
         <ul class="nav-links">
           <li>
             <a href="#about" :class="{ active: activeSection === 'about' }">{{ t('nav.about') }}</a>
@@ -194,6 +193,53 @@ onUnmounted(() => {
         <a class="nav-cta" href="https://github.com/RushDB-Lab" target="_blank" rel="noopener noreferrer">
           {{ t('nav.github') }}
         </a>
+      </div>
+
+      <!-- Mobile hamburger button -->
+      <button class="nav-toggle" type="button" :aria-label="t('nav.openMenu')" @click="toggleNavMenu">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+
+      <!-- Mobile menu -->
+      <div class="nav-mobile-menu" :class="{ open: isMenuOpen }">
+        <ul class="nav-mobile-links">
+          <li>
+            <a href="#about" :class="{ active: activeSection === 'about' }" @click="closeNavMenu">{{ t('nav.about') }}</a>
+          </li>
+          <li>
+            <a href="#achievements" :class="{ active: activeSection === 'achievements' }" @click="closeNavMenu">{{ t('nav.achievements') }}</a>
+          </li>
+          <li>
+            <a href="#projects" :class="{ active: activeSection === 'projects' }" @click="closeNavMenu">{{ t('nav.projects') }}</a>
+          </li>
+          <li>
+            <a href="#members" :class="{ active: activeSection === 'members' }" @click="closeNavMenu">{{ t('nav.members') }}</a>
+          </li>
+          <li>
+            <a :href="`/${lang}/blog/`" class="nav-blog-link">{{ t('nav.blog') }}</a>
+          </li>
+        </ul>
+
+        <div class="nav-mobile-actions">
+          <div class="language-switcher mobile-lang" :class="{ show: isLanguageOpen }">
+            <div class="language-trigger" @click="toggleLanguageSwitcher">{{ languageLabel }}</div>
+            <div class="language-dropdown">
+              <button
+                v-for="(label, langKey) in languages"
+                :key="langKey"
+                class="lang-btn"
+                :class="{ active: lang === langKey }"
+                :data-lang="langKey"
+                @click="switchLanguage(langKey as Lang)"
+              >
+                {{ label }}
+              </button>
+            </div>
+          </div>
+          <a class="nav-cta mobile-cta" href="https://github.com/RushDB-Lab" target="_blank" rel="noopener noreferrer">
+            {{ t('nav.github') }}
+          </a>
+        </div>
       </div>
     </div>
   </nav>
