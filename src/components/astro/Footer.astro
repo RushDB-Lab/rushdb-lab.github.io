@@ -1,0 +1,63 @@
+---
+import { getI18n, type Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { t } = getI18n(lang);
+const currentYear = new Date().getFullYear();
+
+const copyrightText = t('footer.copyright', { year: currentYear });
+---
+
+<footer class="footer">
+  <div class="footer-content">
+    <p class="copyright">
+      <span>{copyrightText}</span>
+      <span class="footer-divider" aria-hidden="true"> · </span>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">蜀ICP备2023035054号-3</a>
+      <span class="busuanzi" aria-label="访问统计">
+        <span class="busuanzi-row">
+          <span id="busuanzi_container_site_uv">
+            <span class="busuanzi-item" aria-label="UV">
+              <svg class="busuanzi-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M16 7c0 2.21-1.79 4-4 4S8 9.21 8 7s1.79-4 4-4 4 1.79 4 4Z"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                />
+                <path
+                  d="M5 20c0-3.31 3.13-6 7-6s7 2.69 7 6"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span id="busuanzi_value_site_uv"></span>
+            </span>
+          </span>
+          <span id="busuanzi_container_site_pv">
+            <span class="busuanzi-item" aria-label="PV">
+              <svg class="busuanzi-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                />
+              </svg>
+              <span id="busuanzi_value_site_pv"></span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,136 @@
+---
+import { getI18n, type Lang } from '../../i18n';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+const { t } = getI18n(lang);
+
+const [, ...slugParts] = post.id.split('/');
+const slug = slugParts.join('/').replace(/\.md$/, '');
+
+const formattedDate = post.data.pubDate.toLocaleDateString(
+  lang === 'zh' ? 'zh-CN' : lang === 'ja' ? 'ja-JP' : 'en-US',
+  { year: 'numeric', month: 'short', day: 'numeric' }
+);
+
+const categoryLabel = t(`blog.categories.${post.data.category}`);
+---
+
+<article class="post-card">
+  <a href={`/${lang}/blog/${slug}/`} class="post-card-link">
+    <div class="post-card-content">
+      <div class="post-card-meta">
+        <span class="post-card-category">{categoryLabel}</span>
+        <span class="post-card-date">{formattedDate}</span>
+      </div>
+
+      <h2 class="post-card-title">{post.data.title}</h2>
+
+      <p class="post-card-description">{post.data.description}</p>
+
+      {post.data.tags.length > 0 && (
+        <div class="post-card-tags">
+          {post.data.tags.slice(0, 3).map((tag: string) => (
+            <span class="post-card-tag">#{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <span class="post-card-read-more">{t('blog.readMore')} →</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card {
+    background: rgba(10, 14, 32, 0.62);
+    border: 1px solid rgba(240, 246, 255, 0.12);
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .post-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(34, 211, 238, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+
+  .post-card-link {
+    display: block;
+    text-decoration: none;
+    padding: 1.5rem;
+  }
+
+  .post-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .post-card-category {
+    color: var(--c1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .post-card-date {
+    color: var(--text-3);
+  }
+
+  .post-card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+
+  .post-card:hover .post-card-title {
+    color: var(--c1);
+  }
+
+  .post-card-description {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-card-tag {
+    color: var(--text-3);
+    font-size: 0.8rem;
+  }
+
+  .post-card-read-more {
+    color: var(--c1);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .post-card:hover .post-card-read-more {
+    transform: translateX(4px);
+  }
+</style>

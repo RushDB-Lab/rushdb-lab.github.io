@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/astro/HeroSection.astro';
+import AchievementsSection from '../../components/astro/AchievementsSection.astro';
+import ProjectsSection from '../../components/astro/ProjectsSection.astro';
+import MembersSection from '../../components/astro/MembersSection.astro';
+import NewsSection from '../../components/astro/NewsSection.astro';
+import ContactSection from '../../components/astro/ContactSection.astro';
+import Footer from '../../components/astro/Footer.astro';
+import AboutSection from '../../components/vue/AboutSection.vue';
+import { getI18n, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t } = getI18n(lang);
+
+const titles: Record<Lang, string> = {
+  zh: 'RushDB - 无限进步',
+  en: 'RushDB - Unlimited Progress',
+  ja: 'RushDB - 無限の進歩',
+};
+---
+
+<BaseLayout title={titles[lang]} lang={lang}>
+  <HeroSection lang={lang} />
+
+  <div class="container">
+    <main id="main-content" class="main-content" role="main">
+      <div class="content-inner">
+        <AboutSection client:visible lang={lang} />
+        <AchievementsSection lang={lang} />
+        <ProjectsSection lang={lang} />
+        <MembersSection lang={lang} />
+        <NewsSection lang={lang} />
+        <ContactSection lang={lang} />
+      </div>
+    </main>
+
+    <Footer lang={lang} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,180 @@
+---
+import '../styles/global.css';
+import { getI18n, type Lang } from '../i18n';
+import NavBar from '../components/vue/NavBar.vue';
+import BackToTop from '../components/vue/BackToTop.vue';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: Lang;
+}
+
+const { title, description, lang } = Astro.props;
+const { t } = getI18n(lang);
+
+const htmlLang = lang === 'zh' ? 'zh-CN' : lang === 'en' ? 'en-US' : 'ja-JP';
+
+const descriptions: Record<Lang, string> = {
+  zh: 'RushDB 实验室 - 专注于数据库系统研究与开发的技术团队，致力于推动数据库技术的创新与发展。',
+  en: 'RushDB Lab - A technology team focused on database system research and development, dedicated to promoting innovation and development of database technology.',
+  ja: 'RushDB Lab - データベースシステムの研究開発に特化した技術チームで、データベース技術の革新と発展を推進しています。',
+};
+
+const metaDescription = description || descriptions[lang];
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={metaDescription} />
+    <meta name="keywords" content="RushDB, 数据库, Database, 技术实验室, 开源项目, MiniOB" />
+    <meta name="author" content="RushDB Lab" />
+    <link rel="canonical" href={`https://rushdb-lab.github.io/${lang}/`} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://rushdb-lab.github.io/${lang}/`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content="https://rushdb-lab.github.io/RushDB.png" />
+    <meta property="og:locale" content={htmlLang.replace('-', '_')} />
+    <meta property="og:site_name" content="RushDB Lab" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={`https://rushdb-lab.github.io/${lang}/`} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content="https://rushdb-lab.github.io/RushDB.png" />
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="icon" type="image/png" href="/RushDB.png" />
+    <link rel="shortcut icon" type="image/png" href="/RushDB.png" />
+    <link rel="apple-touch-icon" href="/RushDB.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "RushDB Lab",
+      "alternateName": "RushDB 实验室",
+      "url": "https://rushdb-lab.github.io/",
+      "logo": "https://rushdb-lab.github.io/RushDB.png",
+      "description": metaDescription,
+      "sameAs": ["https://github.com/RushDB-Lab"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "technical support",
+        "availableLanguage": ["Chinese", "English", "Japanese"]
+      }
+    })} />
+
+    <!-- Alternate language links -->
+    <link rel="alternate" hreflang="zh" href="https://rushdb-lab.github.io/zh/" />
+    <link rel="alternate" hreflang="en" href="https://rushdb-lab.github.io/en/" />
+    <link rel="alternate" hreflang="ja" href="https://rushdb-lab.github.io/ja/" />
+    <link rel="alternate" hreflang="x-default" href="https://rushdb-lab.github.io/zh/" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">{t('a11y.skipToContent')}</a>
+    <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label={t('a11y.scrollProgress')}></div>
+
+    <NavBar client:load lang={lang} currentPath={Astro.url.pathname} />
+
+    <slot />
+
+    <BackToTop client:load lang={lang} />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+
+      // Scroll progress
+      function updateScrollProgress() {
+        const scrollProgress = document.getElementById('scroll-progress');
+        if (!scrollProgress) return;
+
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+        scrollProgress.style.transform = `scaleX(${progress})`;
+        scrollProgress.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
+      }
+
+      // Mouse follow effect
+      function updateMousePosition(e) {
+        if (e.pointerType === 'touch') return;
+        document.body.style.setProperty('--mx', `${e.clientX}px`);
+        document.body.style.setProperty('--my', `${e.clientY}px`);
+      }
+
+      // Section visibility observer
+      function setupSectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section').forEach((el) => observer.observe(el));
+      }
+
+      // Member card hover z-index
+      function setupMemberCardHover() {
+        document.querySelectorAll('.member-card').forEach((card) => {
+          card.addEventListener('mouseenter', () => card.style.zIndex = '10');
+          card.addEventListener('mouseleave', () => card.style.zIndex = '1');
+        });
+      }
+
+      // Busuanzi analytics
+      function loadBusuanzi() {
+        if (document.getElementById('busuanzi-script')) return;
+        const script = document.createElement('script');
+        script.id = 'busuanzi-script';
+        script.async = true;
+        script.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+        document.body.appendChild(script);
+      }
+
+      // Initialize
+      let scrollRaf = null;
+      let pointerRaf = null;
+
+      window.addEventListener('scroll', () => {
+        if (scrollRaf !== null) return;
+        scrollRaf = requestAnimationFrame(() => {
+          updateScrollProgress();
+          scrollRaf = null;
+        });
+      }, { passive: true });
+
+      window.addEventListener('pointermove', (e) => {
+        if (pointerRaf !== null) return;
+        pointerRaf = requestAnimationFrame(() => {
+          updateMousePosition(e);
+          pointerRaf = null;
+        });
+      }, { passive: true });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateScrollProgress();
+        setupSectionObserver();
+        setupMemberCardHover();
+        loadBusuanzi();
+      });
+    </script>
+  </body>
+</html>

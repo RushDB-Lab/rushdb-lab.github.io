@@ -1,0 +1,53 @@
+---
+import { getI18n, type Lang } from '../../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { t } = getI18n(lang);
+---
+
+<section class="section" id="projects">
+  <h2 class="section-title">{t('projects.title')}</h2>
+  <div class="projects-grid">
+    <a
+      href="https://github.com/RushDB-Lab/miniob-RushDB"
+      class="card-link"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div class="project-item featured-project">
+        <div class="project-header">
+          <div class="project-icon">
+            <img src="/miniob.png" alt="MiniOB" />
+          </div>
+          <div class="project-meta">
+            <div class="project-title">{t('projects.miniob.title')}</div>
+            <div class="project-tags">
+              <span class="project-tag">{t('projects.miniob.tags.database')}</span>
+              <span class="project-tag">C++</span>
+              <span class="project-tag">{t('projects.miniob.tags.openSource')}</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-desc">{t('projects.miniob.desc')}</div>
+        <div class="project-features">
+          <div class="feature-item">
+            <span class="feature-icon">⚡</span>
+            {t('projects.miniob.features.optimization')}
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🔍</span>
+            {t('projects.miniob.features.vector')}
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">📊</span>
+            {t('projects.miniob.features.analysis')}
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>

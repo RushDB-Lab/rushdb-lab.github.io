@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getI18n, type Lang } from '../../../i18n';
+import PostCard from '../../../components/blog/PostCard.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'ja' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { t } = getI18n(lang);
+
+const allPosts = await getCollection('blog', ({ id, data }) => {
+  return id.startsWith(`${lang}/`) && !data.draft;
+});
+
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const titles: Record<Lang, string> = {
+  zh: '博客 - RushDB',
+  en: 'Blog - RushDB',
+  ja: 'ブログ - RushDB',
+};
+---
+
+<BaseLayout title={titles[lang]} lang={lang}>
+  <div class="container blog-container">
+    <main id="main-content" class="blog-main" role="main">
+      <h1 class="blog-title">{t('blog.title')}</h1>
+
+      {sortedPosts.length === 0 ? (
+        <p class="no-posts">{t('blog.noPosts')}</p>
+      ) : (
+        <div class="posts-grid">
+          {sortedPosts.map((post) => (
+            <PostCard post={post} lang={lang} />
+          ))}
+        </div>
+      )}
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-container {
+    padding-top: 120px;
+    padding-bottom: 60px;
+    min-height: 100vh;
+  }
+
+  .blog-main {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    background: linear-gradient(90deg, var(--c1), var(--c3), var(--c2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .no-posts {
+    color: var(--text-2);
+    font-size: 1.1rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+</style>

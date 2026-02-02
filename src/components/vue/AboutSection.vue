@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { onMounted, onUnmounted, ref } from 'vue';
+import { ui, type Lang } from '../../i18n/ui';
 
-const { t } = useI18n({ useScope: "global" });
+const props = defineProps<{
+  lang: Lang;
+}>();
+
+const translations = ui[props.lang];
+const t = translations.about;
 
 const membersCount = ref(0);
 const awardsCount = ref(0);
@@ -45,7 +50,7 @@ onMounted(() => {
     { threshold: 0.5 }
   );
 
-  const statsEl = document.querySelector(".intro-stats");
+  const statsEl = document.querySelector('.intro-stats');
   if (statsEl) observer.observe(statsEl);
 });
 
@@ -53,45 +58,32 @@ onUnmounted(() => {
   observer?.disconnect();
   observer = null;
 });
+
+// Replace {brand} placeholder
+const descriptionHtml = t.desc.replace('{brand}', '<strong>RushDB</strong>');
 </script>
 
 <template>
   <section class="section" id="about">
-    <h2 class="section-title">
-      {{ t("about.title") }}
-    </h2>
+    <h2 class="section-title">{{ t.title }}</h2>
     <div class="intro-container">
       <div class="intro-highlight">
         <div class="intro-icon">🚀</div>
-        <h3 class="intro-subtitle">
-          {{ t("about.subtitle") }}
-        </h3>
+        <h3 class="intro-subtitle">{{ t.subtitle }}</h3>
       </div>
-      <p class="intro-text">
-        <i18n-t keypath="about.desc" tag="span">
-          <template #brand>
-            <strong>RushDB</strong>
-          </template>
-        </i18n-t>
-      </p>
+      <p class="intro-text" v-html="descriptionHtml"></p>
       <div class="intro-stats">
         <div class="stat-item">
           <div class="stat-number">{{ membersCount }}</div>
-          <div class="stat-label">
-            {{ t("about.stats.members") }}
-          </div>
+          <div class="stat-label">{{ t.stats.members }}</div>
         </div>
         <div class="stat-item">
           <div class="stat-number">{{ awardsCount }}</div>
-          <div class="stat-label">
-            {{ t("about.stats.awards") }}
-          </div>
+          <div class="stat-label">{{ t.stats.awards }}</div>
         </div>
         <div class="stat-item">
           <div class="stat-number">{{ projectsCount }}</div>
-          <div class="stat-label">
-            {{ t("about.stats.projects") }}
-          </div>
+          <div class="stat-label">{{ t.stats.projects }}</div>
         </div>
       </div>
     </div>

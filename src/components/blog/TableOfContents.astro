@@ -1,0 +1,76 @@
+---
+import { getI18n, type Lang } from '../../i18n';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+  lang: Lang;
+}
+
+const { headings, lang } = Astro.props;
+const { t } = getI18n(lang);
+
+const filteredHeadings = headings.filter(h => h.depth <= 3);
+---
+
+<nav class="toc" aria-label={t('blog.tableOfContents')}>
+  <h3 class="toc-title">{t('blog.tableOfContents')}</h3>
+  <ul class="toc-list">
+    {filteredHeadings.map((heading) => (
+      <li class={`toc-item toc-level-${heading.depth}`}>
+        <a href={`#${heading.slug}`} class="toc-link">{heading.text}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .toc {
+    position: sticky;
+    top: 100px;
+    background: rgba(10, 14, 32, 0.62);
+    border: 1px solid rgba(240, 246, 255, 0.12);
+    border-radius: 14px;
+    padding: 1.25rem;
+  }
+
+  .toc-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .toc-level-2 {
+    padding-left: 0;
+  }
+
+  .toc-level-3 {
+    padding-left: 1rem;
+  }
+
+  .toc-link {
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: block;
+    transition: color 0.2s ease;
+  }
+
+  .toc-link:hover {
+    color: var(--c1);
+  }
+</style>

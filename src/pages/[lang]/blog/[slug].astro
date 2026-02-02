@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getI18n, type Lang } from '../../../i18n';
+import TableOfContents from '../../../components/blog/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+
+  return posts.map((post) => {
+    const [lang, ...slugParts] = post.id.split('/');
+    const slug = slugParts.join('/').replace(/\.md$/, '');
+    return {
+      params: { lang, slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { lang } = Astro.params as { lang: Lang };
+const { t } = getI18n(lang);
+
+const { Content, headings } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString(
+  lang === 'zh' ? 'zh-CN' : lang === 'ja' ? 'ja-JP' : 'en-US',
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+---
+
+<BaseLayout title={`${post.data.title} - RushDB`} description={post.data.description} lang={lang}>
+  <article class="container post-container" data-pagefind-body data-pagefind-meta={`lang:${lang}`}>
+    <main id="main-content" class="post-main" role="main">
+      <header class="post-header">
+        <a href={`/${lang}/blog/`} class="back-link">← {t('blog.backToBlog')}</a>
+
+        <h1 class="post-title">{post.data.title}</h1>
+
+        <div class="post-meta">
+          <span class="post-date">{t('blog.publishedOn')} {formattedDate}</span>
+          <span class="post-author">by {post.data.author}</span>
+        </div>
+
+        {post.data.tags.length > 0 && (
+          <div class="post-tags">
+            {post.data.tags.map((tag: string) => (
+              <a href={`/${lang}/blog/tag/${tag}/`} class="post-tag">#{tag}</a>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <div class="post-layout">
+        {headings.length > 0 && (
+          <aside class="post-sidebar">
+            <TableOfContents headings={headings} lang={lang} />
+          </aside>
+        )}
+
+        <div class="post-content prose">
+          <Content />
+        </div>
+      </div>
+    </main>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-container {
+    padding-top: 120px;
+    padding-bottom: 60px;
+  }
+
+  .post-main {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--text-2);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--c1);
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .post-meta {
+    color: var(--text-3);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-meta span + span::before {
+    content: " · ";
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .post-tag {
+    padding: 0.25rem 0.75rem;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 999px;
+    color: var(--c1);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .post-tag:hover {
+    background: rgba(34, 211, 238, 0.2);
+  }
+
+  .post-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .post-layout {
+      grid-template-columns: 1fr 250px;
+    }
+
+    .post-sidebar {
+      order: 1;
+    }
+
+    .post-content {
+      order: 0;
+    }
+  }
+
+  .post-content {
+    background: rgba(10, 14, 32, 0.62);
+    border: 1px solid rgba(240, 246, 255, 0.12);
+    border-radius: 18px;
+    padding: 2rem;
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3),
+  .post-content :global(h4) {
+    color: var(--text);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(h2) {
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(240, 246, 255, 0.1);
+    padding-bottom: 0.5rem;
+  }
+
+  .post-content :global(p) {
+    color: var(--text-2);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    color: var(--text-2);
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-content :global(code) {
+    background: rgba(240, 246, 255, 0.08);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .post-content :global(pre) {
+    background: rgba(10, 14, 32, 0.9) !important;
+    border: 1px solid rgba(240, 246, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .post-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(th),
+  .post-content :global(td) {
+    border: 1px solid rgba(240, 246, 255, 0.1);
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .post-content :global(th) {
+    background: rgba(240, 246, 255, 0.05);
+    color: var(--text);
+  }
+
+  .post-content :global(td) {
+    color: var(--text-2);
+  }
+
+  .post-content :global(a) {
+    color: var(--c1);
+    text-decoration: underline;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 3px solid var(--c1);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--text-2);
+    font-style: italic;
+  }
+</style>
