@@ -1,6 +1,22 @@
 ---
 import { defaultLang } from '../i18n';
-
-// Redirect root to default language
-return Astro.redirect(`/${defaultLang}/`);
+const redirectUrl = `/${defaultLang}/`;
 ---
+<!DOCTYPE html>
+<html lang={defaultLang}>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url={redirectUrl}">
+  <link rel="canonical" href={redirectUrl}>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <script define:vars={{ redirectUrl }}>
+    window.location.replace(redirectUrl);
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url={redirectUrl}">
+    <a href={redirectUrl}>Click here to continue</a>
+  </noscript>
+</body>
+</html>
