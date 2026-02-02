@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getI18n, type Lang } from '../../../i18n';
 import TableOfContents from '../../../components/blog/TableOfContents.astro';
+import RelatedPosts from '../../../components/blog/RelatedPosts.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -62,6 +63,8 @@ const formattedDate = post.data.pubDate.toLocaleDateString(
           <Content />
         </div>
       </div>
+
+      <RelatedPosts currentPost={post} lang={lang} />
     </main>
   </article>
 </BaseLayout>
