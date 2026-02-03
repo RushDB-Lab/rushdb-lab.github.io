@@ -1,0 +1,168 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-02-04T01:22:23+08:00",
+  "project": {
+    "name": "rushdb-lab.github.io",
+    "description": "RushDB Lab 官方网站 - Astro 5 多语言静态网站",
+    "type": "static-website",
+    "framework": "astro",
+    "language": "typescript"
+  },
+  "scan": {
+    "totalFiles": 27,
+    "scannedFiles": 27,
+    "coveragePercent": 100,
+    "truncated": false,
+    "lastScanDate": "2026-02-04T01:22:23+08:00"
+  },
+  "modules": [
+    {
+      "path": "src/pages",
+      "name": "Pages",
+      "description": "页面路由和视图",
+      "entryFiles": [
+        "src/pages/index.astro",
+        "src/pages/[lang]/index.astro",
+        "src/pages/[lang]/blog/index.astro",
+        "src/pages/[lang]/blog/[slug].astro",
+        "src/pages/[lang]/rss.xml.ts"
+      ],
+      "language": "astro",
+      "hasTests": false
+    },
+    {
+      "path": "src/components/astro",
+      "name": "Astro Components",
+      "description": "静态渲染的 Astro 组件",
+      "entryFiles": [
+        "src/components/astro/HeroSection.astro",
+        "src/components/astro/AchievementsSection.astro",
+        "src/components/astro/ProjectsSection.astro",
+        "src/components/astro/MembersSection.astro",
+        "src/components/astro/NewsSection.astro",
+        "src/components/astro/ContactSection.astro",
+        "src/components/astro/Footer.astro"
+      ],
+      "language": "astro",
+      "hasTests": false
+    },
+    {
+      "path": "src/components/vue",
+      "name": "Vue Components",
+      "description": "客户端交互的 Vue 组件",
+      "entryFiles": [
+        "src/components/vue/NavBar.vue",
+        "src/components/vue/BackToTop.vue",
+        "src/components/vue/AboutSection.vue"
+      ],
+      "language": "vue",
+      "hasTests": false
+    },
+    {
+      "path": "src/components/blog",
+      "name": "Blog Components",
+      "description": "博客专用组件",
+      "entryFiles": [
+        "src/components/blog/PostCard.astro",
+        "src/components/blog/TableOfContents.astro",
+        "src/components/blog/RelatedPosts.astro"
+      ],
+      "language": "astro",
+      "hasTests": false
+    },
+    {
+      "path": "src/i18n",
+      "name": "Internationalization",
+      "description": "国际化翻译系统",
+      "entryFiles": [
+        "src/i18n/index.ts",
+        "src/i18n/ui.ts"
+      ],
+      "language": "typescript",
+      "hasTests": false,
+      "exports": [
+        "getI18n",
+        "getLangFromUrl",
+        "useTranslatedPath",
+        "getLocalizedUrl",
+        "languages",
+        "defaultLang",
+        "ui",
+        "Lang"
+      ]
+    },
+    {
+      "path": "src/content",
+      "name": "Content Collections",
+      "description": "Astro 内容集合（博客）",
+      "entryFiles": [
+        "src/content/config.ts"
+      ],
+      "language": "typescript",
+      "hasTests": false,
+      "collections": ["blog"],
+      "blogPosts": {
+        "zh": ["miniob-vector-database.md"],
+        "en": ["miniob-vector-database.md"],
+        "ja": ["miniob-vector-database.md"]
+      }
+    },
+    {
+      "path": "src/layouts",
+      "name": "Layouts",
+      "description": "页面布局模板",
+      "entryFiles": [
+        "src/layouts/BaseLayout.astro"
+      ],
+      "language": "astro",
+      "hasTests": false
+    },
+    {
+      "path": "src/styles",
+      "name": "Styles",
+      "description": "全局样式定义",
+      "entryFiles": [
+        "src/styles/global.css",
+        "src/styles/site.css"
+      ],
+      "language": "css",
+      "hasTests": false
+    }
+  ],
+  "config": {
+    "astro": "astro.config.mjs",
+    "typescript": "tsconfig.json",
+    "eslint": ".eslintrc.cjs",
+    "package": "package.json"
+  },
+  "deployment": {
+    "platform": "github-pages",
+    "workflow": ".github/workflows/deploy.yml",
+    "branch": "main",
+    "buildCommand": "npm run build",
+    "outputDir": "dist"
+  },
+  "i18n": {
+    "defaultLocale": "zh",
+    "locales": ["zh", "en", "ja"],
+    "routing": {
+      "prefixDefaultLocale": true,
+      "redirectToDefaultLocale": false
+    }
+  },
+  "dependencies": {
+    "runtime": {
+      "astro": "^5.0.0",
+      "vue": "^3.5.13",
+      "@astrojs/vue": "^5.0.0",
+      "@astrojs/rss": "^4.0.0",
+      "@astrojs/sitemap": "^3.2.0"
+    },
+    "dev": {
+      "typescript": "^5.5.4",
+      "@types/node": "^22.10.2"
+    }
+  },
+  "gaps": [],
+  "nextSteps": []
+}
