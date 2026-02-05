@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getI18n, type Lang } from '../../i18n';
 
 interface Props {
@@ -15,7 +16,7 @@ const { t } = getI18n(lang);
     <a href="https://mmmttt000045.github.io" class="card-link" target="_blank" rel="noopener noreferrer">
       <div class="member-card">
         <div class="member-avatar">
-          <img src="/MingTai.png" alt="明泰" class="avatar-img" loading="lazy" decoding="async" />
+          <Image src="/MingTai.png" alt="明泰" class="avatar-img" loading="lazy" decoding="async" width={331} height={490} />
         </div>
         <div class="member-name">{t('members.mingTai.name')}</div>
         <div class="member-info">
@@ -42,7 +43,7 @@ const { t } = getI18n(lang);
     <a href="https://huxin0817.github.io/" class="card-link" target="_blank" rel="noopener noreferrer">
       <div class="member-card">
         <div class="member-avatar">
-          <img src="/HuXin.png" alt="胡鑫" class="avatar-img" loading="lazy" decoding="async" />
+          <Image src="/HuXin.png" alt="胡鑫" class="avatar-img" loading="lazy" decoding="async" width={354} height={523} />
         </div>
         <div class="member-name">{t('members.huXin.name')}</div>
         <div class="member-info">
@@ -69,7 +70,7 @@ const { t } = getI18n(lang);
     <a href="https://koschei.top/" class="card-link" target="_blank" rel="noopener noreferrer">
       <div class="member-card">
         <div class="member-avatar">
-          <img src="/WuYiMin.png" alt="吴奕民" class="avatar-img" loading="lazy" decoding="async" />
+          <Image src="/WuYiMin.png" alt="吴奕民" class="avatar-img" loading="lazy" decoding="async" width={347} height={485} />
         </div>
         <div class="member-name">{t('members.wuYiMin.name')}</div>
         <div class="member-info">

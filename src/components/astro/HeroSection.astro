@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getI18n, type Lang } from '../../i18n';
 
 interface Props {
@@ -15,7 +16,7 @@ const { t } = getI18n(lang);
       <div class="hero-content">
         <div class="logo-container" aria-hidden="true">
           <div class="logo">
-            <img src="/RushDB.png" alt="RushDB Logo" />
+            <Image src="/RushDB.png" alt="RushDB Logo" width={697} height={697} priority />
           </div>
         </div>
         <h1 class="hero-title">

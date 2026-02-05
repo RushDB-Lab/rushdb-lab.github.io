@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getI18n, type Lang } from '../../i18n';
 
 interface Props {
@@ -40,16 +41,109 @@ const descText = t('contact.desc').replace('{brand}', '<strong>RushDB</strong>')
         <div class="contact-qrcodes">
           <div class="contact-wechat">
             <div class="contact-wechat-title">{t('contact.wechatTitle')}</div>
-            <img src="/Wechat.png" alt="RushDB 官方公众号二维码" class="contact-wechat-img" loading="lazy" decoding="async" />
+            <button
+              type="button"
+              class="contact-qrcode-trigger"
+              data-full-src="/Wechat.png"
+              data-alt="RushDB 官方公众号二维码"
+              aria-label="查看 RushDB 官方公众号二维码大图"
+            >
+              <Image
+                src="/Wechat.png"
+                alt="RushDB 官方公众号二维码"
+                class="contact-wechat-img"
+                loading="lazy"
+                decoding="async"
+                width={430}
+                height={430}
+              />
+            </button>
             <div class="contact-wechat-hint">{t('contact.qrHint')}</div>
           </div>
           <div class="contact-redbook">
             <div class="contact-redbook-title">{t('contact.redbookTitle')}</div>
-            <img src="/Redbook.jpg" alt="RushDB 官方小红书二维码" class="contact-redbook-img" loading="lazy" decoding="async" />
+            <button
+              type="button"
+              class="contact-qrcode-trigger"
+              data-full-src="/Redbook.jpg"
+              data-alt="RushDB 官方小红书二维码"
+              aria-label="查看 RushDB 官方小红书二维码大图"
+            >
+              <Image
+                src="/Redbook.jpg"
+                alt="RushDB 官方小红书二维码"
+                class="contact-redbook-img"
+                loading="lazy"
+                decoding="async"
+                width={1002}
+                height={1688}
+              />
+            </button>
             <div class="contact-redbook-hint">{t('contact.qrHint')}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="lightbox" id="qrcode-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <div class="lightbox-content" role="document">
+      <button type="button" class="lightbox-close" data-lightbox-close aria-label="关闭预览">×</button>
+      <img class="lightbox-image" alt="" />
+    </div>
+  </div>
 </section>
+
+<script is:inline>
+  (() => {
+    const lightbox = document.getElementById('qrcode-lightbox');
+    if (!lightbox) return;
+
+    const image = lightbox.querySelector('.lightbox-image');
+    const triggers = document.querySelectorAll('.contact-qrcode-trigger');
+    const closeTargets = lightbox.querySelectorAll('[data-lightbox-close]');
+    let lastActive = null;
+
+    if (lightbox.parentElement !== document.body) {
+      document.body.appendChild(lightbox);
+    }
+
+    const openLightbox = (src, alt) => {
+      if (!image) return;
+      image.src = src;
+      image.alt = alt || '';
+      image.decoding = 'async';
+      lastActive = document.activeElement;
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (image) image.src = '';
+      if (lastActive && typeof lastActive.focus === 'function') {
+        lastActive.focus();
+      }
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const src = trigger.getAttribute('data-full-src');
+        const alt = trigger.getAttribute('data-alt') || trigger.getAttribute('aria-label') || '';
+        if (src) openLightbox(src, alt);
+      });
+    });
+
+    closeTargets.forEach((el) => el.addEventListener('click', closeLightbox));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+        closeLightbox();
+      }
+    });
+  })();
+</script>

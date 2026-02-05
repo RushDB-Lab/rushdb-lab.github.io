@@ -34,6 +34,32 @@ const languages: Record<Lang, string> = {
   ja: '🇯🇵 日本語',
 };
 
+function normalizePath(path: string) {
+  if (!path) return '/';
+  return path.endsWith('/') ? path : `${path}/`;
+}
+
+const homePath = computed(() => `/${props.lang}/`);
+const isHome = computed(() => normalizePath(props.currentPath) === homePath.value);
+const scrollTargetKey = 'rushdb-scroll-target';
+
+function sectionHref(id: string) {
+  return isHome.value ? `#${id}` : homePath.value;
+}
+
+function navigateToSection(id: string) {
+  if (isHome.value) {
+    const targetEl = document.getElementById(id);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return;
+  }
+
+  sessionStorage.setItem(scrollTargetKey, id);
+  window.location.href = homePath.value;
+}
+
 let navHighlightObserver: IntersectionObserver | null = null;
 
 function toggleLanguageSwitcher() {
@@ -73,6 +99,12 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function onLogoClick(event: MouseEvent) {
+  if (!isHome.value) return;
+  event.preventDefault();
+  scrollToTop();
+}
+
 function updateNavbarBg() {
   navbarBg.value = window.scrollY > 100 ? 'rgba(5, 7, 18, 0.82)' : 'rgba(5, 7, 18, 0.72)';
 }
@@ -91,6 +123,17 @@ function onDocumentClick(event: MouseEvent) {
 
   if (isMenuOpen.value && !target.closest('.navbar') && !target.closest('.nav-toggle')) {
     closeNavMenu();
+  }
+
+  const sectionAnchor = target.closest<HTMLAnchorElement>('a[data-section]');
+  if (sectionAnchor) {
+    const sectionId = sectionAnchor.dataset.section;
+    if (!sectionId) return;
+
+    event.preventDefault();
+    closeNavMenu();
+    navigateToSection(sectionId);
+    return;
   }
 
   const anchor = target.closest<HTMLAnchorElement>('a[href^="#"]:not(.nav-logo)');
@@ -150,7 +193,7 @@ onUnmounted(() => {
 <template>
   <nav class="navbar" :class="{ 'menu-open': isMenuOpen }" :style="{ background: navbarBg }" role="navigation" :aria-label="t('a11y.mainNavigation')">
     <div class="nav-content">
-      <a href="#" class="nav-logo" @click.prevent="scrollToTop">
+      <a :href="homePath" class="nav-logo" @click="onLogoClick">
         <img src="/RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
         <span>&ensp;RushDB</span>
       </a>
@@ -159,16 +202,22 @@ onUnmounted(() => {
       <div class="nav-actions nav-desktop">
         <ul class="nav-links">
           <li>
-            <a href="#about" :class="{ active: activeSection === 'about' }">{{ t('nav.about') }}</a>
+            <a :href="sectionHref('about')" data-section="about" :class="{ active: activeSection === 'about' }">{{ t('nav.about') }}</a>
           </li>
           <li>
-            <a href="#achievements" :class="{ active: activeSection === 'achievements' }">{{ t('nav.achievements') }}</a>
+            <a
+              :href="sectionHref('achievements')"
+              data-section="achievements"
+              :class="{ active: activeSection === 'achievements' }"
+            >
+              {{ t('nav.achievements') }}
+            </a>
           </li>
           <li>
-            <a href="#projects" :class="{ active: activeSection === 'projects' }">{{ t('nav.projects') }}</a>
+            <a :href="sectionHref('projects')" data-section="projects" :class="{ active: activeSection === 'projects' }">{{ t('nav.projects') }}</a>
           </li>
           <li>
-            <a href="#members" :class="{ active: activeSection === 'members' }">{{ t('nav.members') }}</a>
+            <a :href="sectionHref('members')" data-section="members" :class="{ active: activeSection === 'members' }">{{ t('nav.members') }}</a>
           </li>
           <li>
             <a :href="`/${lang}/blog/`" class="nav-blog-link">{{ t('nav.blog') }}</a>
@@ -204,16 +253,29 @@ onUnmounted(() => {
       <div class="nav-mobile-menu" :class="{ open: isMenuOpen }">
         <ul class="nav-mobile-links">
           <li>
-            <a href="#about" :class="{ active: activeSection === 'about' }" @click="closeNavMenu">{{ t('nav.about') }}</a>
+            <a :href="sectionHref('about')" data-section="about" :class="{ active: activeSection === 'about' }" @click="closeNavMenu">
+              {{ t('nav.about') }}
+            </a>
           </li>
           <li>
-            <a href="#achievements" :class="{ active: activeSection === 'achievements' }" @click="closeNavMenu">{{ t('nav.achievements') }}</a>
+            <a
+              :href="sectionHref('achievements')"
+              data-section="achievements"
+              :class="{ active: activeSection === 'achievements' }"
+              @click="closeNavMenu"
+            >
+              {{ t('nav.achievements') }}
+            </a>
           </li>
           <li>
-            <a href="#projects" :class="{ active: activeSection === 'projects' }" @click="closeNavMenu">{{ t('nav.projects') }}</a>
+            <a :href="sectionHref('projects')" data-section="projects" :class="{ active: activeSection === 'projects' }" @click="closeNavMenu">
+              {{ t('nav.projects') }}
+            </a>
           </li>
           <li>
-            <a href="#members" :class="{ active: activeSection === 'members' }" @click="closeNavMenu">{{ t('nav.members') }}</a>
+            <a :href="sectionHref('members')" data-section="members" :class="{ active: activeSection === 'members' }" @click="closeNavMenu">
+              {{ t('nav.members') }}
+            </a>
           </li>
           <li>
             <a :href="`/${lang}/blog/`" class="nav-blog-link">{{ t('nav.blog') }}</a>

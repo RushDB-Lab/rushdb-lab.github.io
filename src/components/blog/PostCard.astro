@@ -35,7 +35,7 @@ const heroImage = post.data.heroImage;
   <a href={`/${lang}/blog/${slug}/`} class="post-card-link">
     {heroImage && (
       <div class="post-card-image">
-        <img src={heroImage} alt={post.data.title} loading="lazy" />
+        <img src={heroImage} alt={post.data.title} loading="lazy" data-image-component="true" />
         <div class="post-card-image-overlay"></div>
       </div>
     )}

@@ -22,7 +22,7 @@ export const ui = {
       openMenu: '打开菜单',
     },
     hero: {
-      title: 'RushDB，无限进步',
+      title: 'RushDB 无限进步',
       subtitle: '专注数据库技术的本科生竞赛团队',
       actions: {
         learnMore: '了解更多',
