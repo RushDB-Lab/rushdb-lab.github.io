@@ -13,9 +13,15 @@ const fullTitle = t('hero.title');
 const brand = 'RushDB';
 const rawMotto = fullTitle.startsWith(brand) ? fullTitle.slice(brand.length) : fullTitle;
 const mottoText = rawMotto.replace(/^[\s,、，]+/, '');
+const panelWidthByLang: Record<Lang, string> = {
+  zh: '620px',
+  en: '580px',
+  ja: '630px',
+};
+const heroStyle = `--hero-panel-width: ${panelWidthByLang[lang]};`;
 ---
 
-<section class="hero">
+<section class="hero" style={heroStyle}>
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">

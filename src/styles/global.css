@@ -2369,7 +2369,7 @@
         transform: translateY(0) rotate(-45deg);
       }
 
-      @media (max-width: 980px) {
+      @media (max-width: 1180px) {
         .nav-toggle {
           display: inline-flex;
         }
@@ -2487,7 +2487,7 @@
       }
 
       /* Show mobile menu structure only on mobile */
-      @media (min-width: 981px) {
+      @media (min-width: 1181px) {
         .nav-toggle {
           display: none;
         }
@@ -2640,8 +2640,25 @@
         box-shadow: 0 10px 44px rgba(0, 0, 0, 0.35);
       }
 
+      .nav-content {
+        max-width: 1200px;
+        padding: 0 2rem;
+        gap: clamp(12px, 1.8vw, 24px);
+      }
+
+      .nav-actions {
+        flex: 1 1 auto;
+        justify-content: flex-end;
+        gap: clamp(12px, 1.5vw, 24px);
+      }
+
+      .nav-links {
+        gap: clamp(8px, 1.1vw, 20px);
+      }
+
       .nav-logo {
         color: var(--c1);
+        flex: 0 0 auto;
       }
 
       .nav-logo-img {
@@ -2654,7 +2671,7 @@
       .nav-links a {
         color: var(--text-2);
         font-weight: 650;
-        padding: 10px 10px;
+        padding: 9px clamp(6px, 0.8vw, 10px);
         border-radius: 12px;
         border: 1px solid transparent;
       }
@@ -2674,14 +2691,19 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 10px 14px;
+        padding: 10px clamp(11px, 1vw, 14px);
         border-radius: 14px;
         background: rgba(34, 211, 238, 0.1);
         border: 1px solid rgba(34, 211, 238, 0.22);
         color: var(--text);
         text-decoration: none;
         font-weight: 750;
+        white-space: nowrap;
         transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .nav-cta span {
+        white-space: nowrap;
       }
 
       .nav-cta-icon {
@@ -2696,10 +2718,50 @@
         border-color: rgba(168, 85, 247, 0.28);
       }
 
+      .language-trigger {
+        min-width: 104px;
+        padding: 8px 10px;
+      }
+
+      @media (max-width: 1420px) {
+        .nav-content {
+          max-width: 1200px;
+          padding: 0 2rem;
+        }
+
+        .nav-actions {
+          gap: 10px;
+        }
+
+        .nav-links {
+          gap: 6px;
+        }
+
+        .nav-links a {
+          padding: 8px 6px;
+          font-size: 0.96rem;
+        }
+
+        .language-trigger {
+          min-width: 96px;
+        }
+
+        .nav-cta {
+          padding: 9px 11px;
+          font-size: 0.96rem;
+        }
+      }
+
       .hero {
         padding: 120px 0 70px;
         text-align: left;
         align-items: center;
+        --hero-max-width: 1320px;
+        --hero-panel-width: 560px;
+      }
+
+      .hero .container {
+        max-width: var(--hero-max-width);
       }
 
       .hero-content {
@@ -2707,12 +2769,14 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+        width: 100%;
+        max-width: 720px;
       }
 
       .hero-grid {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 40px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: clamp(28px, 3vw, 40px);
         align-items: center;
       }
 
@@ -2743,6 +2807,11 @@
 
       html[lang="en-US"] .hero-title {
         line-height: 1.16;
+        font-size: clamp(2.35rem, 4.9vw, 4.2rem);
+      }
+
+      html[lang="ja-JP"] .hero-title {
+        font-size: clamp(2.75rem, 6.6vw, 5.4rem);
       }
 
       .hero-subtitle {
@@ -2794,9 +2863,26 @@
       }
 
       .hero-panel {
+        width: min(100%, var(--hero-panel-width));
+        justify-self: end;
         opacity: 0;
         transform: translateY(18px);
         animation: fadeInUp 1s ease-out 0.45s forwards;
+      }
+
+      @media (max-width: 1280px) {
+        .hero {
+          min-height: auto;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-panel {
+          width: 100%;
+          justify-self: stretch;
+        }
       }
 
       .panel {
@@ -2858,6 +2944,17 @@
         color: var(--text-2);
         line-height: 1.7;
         font-size: 0.98rem;
+      }
+
+      @media (min-width: 1200px) {
+        html[lang="en-US"] .hero-motto {
+          white-space: nowrap;
+        }
+
+        html[lang="en-US"] .panel-body {
+          white-space: nowrap;
+          font-size: 0.94rem;
+        }
       }
 
       .panel-metrics {

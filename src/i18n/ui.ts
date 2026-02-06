@@ -242,7 +242,7 @@ export const ui = {
       panel: {
         kicker: 'Systems Team',
         title: 'Database-first, engineering you can verify',
-        body: 'Design, optimize, build: from queries to systems, from competitions to open source.',
+        body: 'Design, optimize, build: from query engines to open source.',
         metrics: {
           members: 'Members',
           awards: 'Awards',
@@ -427,14 +427,14 @@ export const ui = {
   },
   ja: {
     nav: {
-      about: '私たちについて',
-      achievements: '競技成果',
+      about: '概要',
+      achievements: '実績',
       projects: 'プロジェクト',
-      members: 'チームメンバー',
-      news: '関連報道',
-      contact: 'お問い合わせ',
+      members: 'メンバー',
+      news: '報道',
+      contact: '連絡',
       blog: 'ブログ',
-      github: 'View Our Github',
+      github: 'GitHub',
       openMenu: 'メニューを開く',
       switchToLight: 'ライトモードに切替',
       switchToDark: 'ダークモードに切替',
