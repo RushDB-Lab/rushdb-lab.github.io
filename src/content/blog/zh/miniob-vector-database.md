@@ -73,9 +73,9 @@ private:
 
 ### 3.1 距离计算的数学原理
 
-对于两个 \(n\) 维向量 \(\mathbf{a}\) 和 \(\mathbf{b}\)，欧几里得距离（L2）定义为：
+对于两个 `n` 维向量 `a` 和 `b`，欧几里得距离（L2）定义为：
 
-$$ d(\mathbf{a}, \mathbf{b}) = \sqrt{\sum_{i=1}^{n} (a_i - b_i)^2} $$
+<p><strong>d(a, b) = ||a - b||<sub>2</sub> = √(Σ<sub>i=1</sub><sup>n</sup> (a<sub>i</sub> - b<sub>i</sub>)<sup>2</sup>)</strong></p>
 
 在比较大小时，我们通常省略开方运算以减少 CPU 开销。
 
