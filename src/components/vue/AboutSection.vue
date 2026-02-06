@@ -8,6 +8,11 @@ const props = defineProps<{
 
 const translations = ui[props.lang];
 const t = translations.about;
+const milestones = [
+  { time: t.milestones.meet.time, event: t.milestones.meet.event },
+  { time: t.milestones.awards.time, event: t.milestones.awards.event },
+  { time: t.milestones.foundation.time, event: t.milestones.foundation.event },
+];
 
 const membersCount = ref(0);
 const awardsCount = ref(0);
@@ -72,6 +77,17 @@ const descriptionHtml = t.desc.replace('{brand}', '<strong>RushDB</strong>');
         <h3 class="intro-subtitle">{{ t.subtitle }}</h3>
       </div>
       <p class="intro-text" v-html="descriptionHtml"></p>
+      <div class="intro-timeline-shell">
+        <div class="intro-timeline" role="list" aria-label="Team timeline">
+          <div v-for="(item, index) in milestones" :key="index" class="timeline-item" role="listitem">
+            <div class="timeline-time">{{ item.time }}</div>
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="timeline-dot"></span>
+            </div>
+            <p class="timeline-event">{{ item.event }}</p>
+          </div>
+        </div>
+      </div>
       <div class="intro-stats">
         <div class="stat-item">
           <div class="stat-number">{{ membersCount }}</div>

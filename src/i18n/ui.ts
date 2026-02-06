@@ -18,7 +18,7 @@ export const ui = {
       news: '相关报道',
       contact: '联系我们',
       blog: '博客',
-      github: 'GitHub',
+      github: 'View Our Github',
       openMenu: '打开菜单',
     },
     hero: {
@@ -42,8 +42,22 @@ export const ui = {
     },
     about: {
       title: '团队简介',
-      subtitle: '专注数据库技术创新',
-      desc: '{brand} 是一支充满热情、专注于数据库技术的竞赛团队。我们致力于在数据库设计、查询优化、性能调优及管理等领域不断探索和挑战。我们的目标是在各大数据库相关竞赛中取得优异成绩，并推动数据库技术的学习与应用。',
+      subtitle: '起源于竞赛，聚焦数据库系统工程',
+      desc: '{brand} 由三位初创成员联合发起，长期聚焦数据库系统设计、查询优化与性能工程。团队坚持以赛促研、以研促用，在高强度竞赛与开源实践中持续验证技术方案与工程能力。',
+      milestones: {
+        meet: {
+          time: '2024 · CSCC 数据库赛道',
+          event: '三位初创成员在全国大学生计算机系统能力大赛（CSCC）数据库赛道首次结识。',
+        },
+        awards: {
+          time: '2024 · 全国一等奖',
+          event: '三人当时分属两支参赛队伍，均获全国一等奖，分别位列全国第 2 名与第 3 名。',
+        },
+        foundation: {
+          time: '2024-09-23 · 团队成立',
+          event: 'RushDB 于 2024 年 9 月 23 日正式成立，并以团队形态征战第四届 OceanBase 数据库大赛。',
+        },
+      },
       stats: {
         members: '团队成员',
         awards: '全国奖项',
@@ -101,22 +115,26 @@ export const ui = {
     },
     members: {
       title: '团队成员',
+      nowAtLabel: '目前所在',
       mingTai: {
         name: '明泰',
         school: '成都理工大学 26 届',
         major: '智能科学与技术',
+        nowAt: '中国人民大学',
         location: '四川省成都市',
       },
       huXin: {
         name: '胡鑫',
         school: '成都理工大学 26 届',
         major: '智能科学与技术',
+        nowAt: '字节跳动 - 火山引擎',
         location: '四川省成都市',
       },
       wuYiMin: {
         name: '吴奕民',
         school: '沈阳工业大学 25 届',
         major: '计算机科学与技术',
+        nowAt: '浙江大学',
         location: '辽宁省沈阳市',
       },
     },
@@ -206,7 +224,7 @@ export const ui = {
       news: 'Related News',
       contact: 'Contact Us',
       blog: 'Blog',
-      github: 'GitHub',
+      github: 'View Our Github',
       openMenu: 'Open menu',
     },
     hero: {
@@ -230,8 +248,22 @@ export const ui = {
     },
     about: {
       title: 'Team Introduction',
-      subtitle: 'Focused on Database Technology Innovation',
-      desc: '{brand} is a passionate competition team focused on database technology. We are committed to continuous exploration and challenges in database design, query optimization, performance tuning, and management. Our goal is to achieve excellent results in major database-related competitions and promote the learning and application of database technology.',
+      subtitle: 'Originating from Competition, Focused on Database Systems Engineering',
+      desc: '{brand} was co-founded by three initial members and focuses on database system design, query optimization, and performance engineering. The team follows a competition-driven R&D approach, continuously validating technical solutions and engineering execution through top-tier contests and open-source practice.',
+      milestones: {
+        meet: {
+          time: '2024 · CSCC Database Track',
+          event: 'The three founding members first met in the database track of the National College Computer System Capability Competition (CSCC).',
+        },
+        awards: {
+          time: '2024 · National First Prize',
+          event: 'They competed on two separate teams, and both teams won National First Prize, ranking 2nd and 3rd nationwide.',
+        },
+        foundation: {
+          time: '2024-09-23 · Team Founded',
+          event: 'RushDB was formally established on September 23, 2024, and entered the 4th OceanBase Database Competition as a unified team.',
+        },
+      },
       stats: {
         members: 'Team Members',
         awards: 'National Awards',
@@ -289,22 +321,26 @@ export const ui = {
     },
     members: {
       title: 'Team Members',
+      nowAtLabel: 'Current affiliation',
       mingTai: {
         name: 'Tai Ming',
         school: 'Chengdu University of Technology, Class of 2026',
         major: 'Intelligent Science and Technology',
+        nowAt: 'Renmin University of China',
         location: 'Chengdu, Sichuan Province, China',
       },
       huXin: {
         name: 'Xin Hu',
         school: 'Chengdu University of Technology, Class of 2026',
         major: 'Intelligent Science and Technology',
+        nowAt: 'ByteDance - Volcano Engine',
         location: 'Chengdu, Sichuan Province, China',
       },
       wuYiMin: {
         name: 'YiMin Wu',
         school: 'Shenyang University of Technology, Class of 2025',
         major: 'Computer Science and Technology',
+        nowAt: 'Zhejiang University',
         location: 'Shenyang, Liaoning Province, China',
       },
     },
@@ -394,7 +430,7 @@ export const ui = {
       news: '関連報道',
       contact: 'お問い合わせ',
       blog: 'ブログ',
-      github: 'GitHub',
+      github: 'View Our Github',
       openMenu: 'メニューを開く',
     },
     hero: {
@@ -418,8 +454,22 @@ export const ui = {
     },
     about: {
       title: 'チーム紹介',
-      subtitle: 'データベース技術革新に専念',
-      desc: '{brand}は、データベース技術に特化した情熱的な競技チームです。データベース設計、クエリ最適化、パフォーマンスチューニング、管理などの分野で継続的な探求と挑戦に取り組んでいます。主要なデータベース関連競技で優秀な成績を収め、データベース技術の学習と応用を推進することが私たちの目標です。',
+      subtitle: '競技を起点に、データベースシステム工学へ',
+      desc: '{brand}は3名の初創メンバーにより共同で立ち上げられ、データベースシステム設計・クエリ最適化・性能工学に注力しています。競技を研究開発の起点とし、ハイレベルな大会とOSS実践を通じて、技術方針と実装力を継続的に検証しています。',
+      milestones: {
+        meet: {
+          time: '2024・CSCC データベース競技',
+          event: '3名の初創メンバーは、全国大学生コンピュータシステム能力大会（CSCC）データベース競技で初めて出会いました。',
+        },
+        awards: {
+          time: '2024・全国一等賞',
+          event: '当時は2つの別チームとして出場し、いずれも全国一等賞を受賞。全国2位と3位を獲得しました。',
+        },
+        foundation: {
+          time: '2024-09-23・チーム発足',
+          event: 'RushDBは2024年9月23日に正式発足し、第4回 OceanBase データベース大会にチームとして参戦しました。',
+        },
+      },
       stats: {
         members: 'チームメンバー',
         awards: '全国賞',
@@ -477,22 +527,26 @@ export const ui = {
     },
     members: {
       title: 'チームメンバー',
+      nowAtLabel: '現在所属',
       mingTai: {
         name: '明泰',
         school: '成都理工大学 26期',
         major: '知能科学技術',
+        nowAt: '中国人民大学',
         location: '中国四川省成都市',
       },
       huXin: {
         name: '胡鑫',
         school: '成都理工大学 26期',
         major: '知能科学技術',
+        nowAt: 'ByteDance - Volcano Engine',
         location: '中国四川省成都市',
       },
       wuYiMin: {
         name: '吴奕民',
         school: '瀋陽工業大学 25期',
         major: 'コンピュータ科学技術',
+        nowAt: '浙江大学',
         location: '中国遼寧省瀋陽市',
       },
     },
