@@ -279,10 +279,7 @@ html:not(.theme-preload) .timeline-event {
 
 /* Nav logo text gradient in light */
 :root[data-theme="light"] .nav-logo {
-  background: linear-gradient(90deg, var(--c1) 0%, var(--c3) 45%, var(--c2) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--c1);
 }
 
 /* Nav logo image border */
@@ -556,6 +553,20 @@ html:not(.theme-preload) .timeline-event {
 
 :root[data-theme="light"] .member-card:hover {
   box-shadow: 0 8px 24px rgba(41, 37, 28, 0.08);
+}
+
+/* Member card amber accents - light mode uses deeper amber for contrast */
+:root[data-theme="light"] .member-card:hover .member-name {
+  color: #b45309;
+}
+
+:root[data-theme="light"] .detail-value {
+  color: #b45309;
+}
+
+:root[data-theme="light"] .member-now-at {
+  border-color: rgba(180, 83, 9, 0.25);
+  background: rgba(245, 158, 11, 0.08);
 }
 
 /* Logo container */

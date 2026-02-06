@@ -712,7 +712,7 @@
       }
 
       .member-card:hover .member-name {
-        color: var(--accent-secondary);
+        color: #f59e0b;
         transform: translateY(-2px);
       }
 
@@ -1144,8 +1144,8 @@
         margin: 0.55rem 0 0.65rem;
         padding: 0.45rem 0.6rem;
         border-radius: 10px;
-        border: 1px solid rgba(96, 165, 250, 0.35);
-        background: rgba(59, 130, 246, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.30);
+        background: rgba(245, 158, 11, 0.10);
       }
 
       .member-now-at span:not(.detail-icon) {
@@ -1162,7 +1162,7 @@
         flex: 1 1 auto;
         min-width: 0;
         font-weight: 600;
-        color: var(--accent-secondary);
+        color: #f59e0b;
         overflow-wrap: anywhere;
       }
 
@@ -2264,7 +2264,7 @@
       .news-item:hover {
         box-shadow: 0 26px 60px rgba(0, 0, 0, 0.55),
           0 0 0 1px rgba(34, 211, 238, 0.24),
-          0 0 60px rgba(168, 85, 247, 0.12);
+          0 0 60px rgba(245, 158, 11, 0.12);
       }
 
       .member-avatar {
@@ -2619,10 +2619,7 @@
       }
 
       .nav-logo {
-        background: linear-gradient(90deg, var(--c1) 0%, var(--c3) 45%, var(--c2) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: var(--c1);
       }
 
       .nav-logo-img {
@@ -3271,7 +3268,7 @@
         background: radial-gradient(
           circle,
           rgba(34, 211, 238, 0.4) 0%,
-          rgba(168, 85, 247, 0.2) 40%,
+          rgba(245, 158, 11, 0.2) 40%,
           transparent 70%
         );
         border-radius: 50%;
@@ -3406,7 +3403,7 @@
         background: linear-gradient(
           135deg,
           rgba(34, 211, 238, 0.5),
-          rgba(168, 85, 247, 0.3),
+          rgba(245, 158, 11, 0.3),
           rgba(96, 165, 250, 0.4)
         );
         border-radius: inherit;
@@ -3429,7 +3426,7 @@
           0 4px 6px rgba(0, 0, 0, 0.1),
           0 10px 20px rgba(0, 0, 0, 0.15),
           0 20px 40px rgba(34, 211, 238, 0.1),
-          0 0 60px rgba(168, 85, 247, 0.05);
+          0 0 60px rgba(245, 158, 11, 0.05);
       }
 
       /* Staggered hover animations for card children */
