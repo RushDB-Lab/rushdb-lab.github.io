@@ -20,6 +20,8 @@ export const ui = {
       blog: '博客',
       github: 'View Our Github',
       openMenu: '打开菜单',
+      switchToLight: '切换到浅色模式',
+      switchToDark: '切换到深色模式',
     },
     hero: {
       title: 'RushDB 无限进步',
@@ -226,6 +228,8 @@ export const ui = {
       blog: 'Blog',
       github: 'View Our Github',
       openMenu: 'Open menu',
+      switchToLight: 'Switch to Light Mode',
+      switchToDark: 'Switch to Dark Mode',
     },
     hero: {
       title: 'RushDB, Unlimited Progress',
@@ -432,6 +436,8 @@ export const ui = {
       blog: 'ブログ',
       github: 'View Our Github',
       openMenu: 'メニューを開く',
+      switchToLight: 'ライトモードに切替',
+      switchToDark: 'ダークモードに切替',
     },
     hero: {
       title: 'RushDB、無限の進歩',

@@ -23,8 +23,9 @@ const t = (key: string) => {
 
 const isLanguageOpen = ref(false);
 const isMenuOpen = ref(false);
-const navbarBg = ref('rgba(5, 7, 18, 0.72)');
+const isScrolled = ref(false);
 const activeSection = ref('');
+const theme = ref<'dark' | 'light'>('dark');
 
 const languageLabel = computed(() => t(`language.${props.lang}`));
 
@@ -106,7 +107,32 @@ function onLogoClick(event: MouseEvent) {
 }
 
 function updateNavbarBg() {
-  navbarBg.value = window.scrollY > 100 ? 'rgba(5, 7, 18, 0.82)' : 'rgba(5, 7, 18, 0.72)';
+  isScrolled.value = window.scrollY > 100;
+}
+
+function toggleTheme() {
+  const w = window as any;
+  if (w.__rushdbTheme) {
+    w.__rushdbTheme.toggle();
+  }
+}
+
+function syncThemeState() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  theme.value = current as 'dark' | 'light';
+}
+
+function onThemeChange() {
+  syncThemeState();
+}
+
+function onStorageChange(e: StorageEvent) {
+  if (e.key !== 'rushdb-theme') return;
+  const w = window as any;
+  if (w.__rushdbTheme && e.newValue) {
+    w.__rushdbTheme.set(e.newValue, false);
+  }
+  syncThemeState();
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -174,8 +200,11 @@ function setupNavHighlightObserver() {
 }
 
 onMounted(() => {
+  syncThemeState();
   updateNavbarBg();
   window.addEventListener('scroll', updateNavbarBg, { passive: true });
+  window.addEventListener('rushdb-theme-change', onThemeChange);
+  window.addEventListener('storage', onStorageChange);
   document.addEventListener('keydown', onKeydown);
   document.addEventListener('click', onDocumentClick);
   setupNavHighlightObserver();
@@ -183,6 +212,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateNavbarBg);
+  window.removeEventListener('rushdb-theme-change', onThemeChange);
+  window.removeEventListener('storage', onStorageChange);
   document.removeEventListener('keydown', onKeydown);
   document.removeEventListener('click', onDocumentClick);
   navHighlightObserver?.disconnect();
@@ -191,7 +222,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <nav class="navbar" :class="{ 'menu-open': isMenuOpen }" :style="{ background: navbarBg }" role="navigation" :aria-label="t('a11y.mainNavigation')">
+  <nav class="navbar" :class="{ 'menu-open': isMenuOpen, 'is-scrolled': isScrolled }" role="navigation" :aria-label="t('a11y.mainNavigation')">
     <div class="nav-content">
       <a :href="homePath" class="nav-logo" @click="onLogoClick">
         <img src="/RushDB.png" alt="RushDB Logo" class="nav-logo-img" />
@@ -223,6 +254,20 @@ onUnmounted(() => {
             <a :href="`/${lang}/blog/`" class="nav-blog-link">{{ t('nav.blog') }}</a>
           </li>
         </ul>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          :aria-label="theme === 'dark' ? t('nav.switchToLight') : t('nav.switchToDark')"
+          @click="toggleTheme"
+        >
+          <svg v-if="theme === 'dark'" class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg v-else class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
 
         <div class="language-switcher" :class="{ show: isLanguageOpen }">
           <div class="language-trigger" @click="toggleLanguageSwitcher">{{ languageLabel }}</div>
@@ -294,6 +339,19 @@ onUnmounted(() => {
         </ul>
 
         <div class="nav-mobile-actions">
+          <button
+            class="theme-toggle"
+            type="button"
+            :aria-label="theme === 'dark' ? t('nav.switchToLight') : t('nav.switchToDark')"
+            @click="toggleTheme"
+          >
+            <svg v-if="theme === 'dark'" class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg v-else class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
           <div class="language-switcher mobile-lang" :class="{ show: isLanguageOpen }">
             <div class="language-trigger" @click="toggleLanguageSwitcher">{{ languageLabel }}</div>
             <div class="language-dropdown">

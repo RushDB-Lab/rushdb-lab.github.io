@@ -140,8 +140,8 @@ const filteredHeadings = headings.filter(h => h.depth <= 3);
   .toc {
     position: sticky;
     top: 100px;
-    background: rgba(10, 14, 32, 0.62);
-    border: 1px solid rgba(240, 246, 255, 0.12);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1.25rem;
     backdrop-filter: blur(12px);
@@ -155,7 +155,7 @@ const filteredHeadings = headings.filter(h => h.depth <= 3);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(240, 246, 255, 0.1);
+    border-bottom: 1px solid var(--line);
   }
 
   .toc-list {
@@ -209,7 +209,7 @@ const filteredHeadings = headings.filter(h => h.depth <= 3);
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: rgba(240, 246, 255, 0.2);
+    background: var(--line);
     flex-shrink: 0;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }

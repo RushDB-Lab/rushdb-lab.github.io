@@ -160,8 +160,8 @@ const formattedDate = post.data.pubDate.toLocaleDateString(
   }
 
   .post-content {
-    background: rgba(10, 14, 32, 0.62);
-    border: 1px solid rgba(240, 246, 255, 0.12);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: 18px;
     padding: 2rem;
   }
@@ -177,7 +177,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString(
 
   .post-content :global(h2) {
     font-size: 1.5rem;
-    border-bottom: 1px solid rgba(240, 246, 255, 0.1);
+    border-bottom: 1px solid var(--line);
     padding-bottom: 0.5rem;
   }
 
@@ -199,15 +199,15 @@ const formattedDate = post.data.pubDate.toLocaleDateString(
   }
 
   .post-content :global(code) {
-    background: rgba(240, 246, 255, 0.08);
+    background: var(--line-2, rgba(240, 246, 255, 0.08));
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-size: 0.9em;
   }
 
   .post-content :global(pre) {
-    background: rgba(10, 14, 32, 0.9) !important;
-    border: 1px solid rgba(240, 246, 255, 0.1);
+    background: var(--bg-primary) !important;
+    border: 1px solid var(--line);
     border-radius: 12px;
     padding: 1rem;
     overflow-x: auto;
@@ -227,13 +227,13 @@ const formattedDate = post.data.pubDate.toLocaleDateString(
 
   .post-content :global(th),
   .post-content :global(td) {
-    border: 1px solid rgba(240, 246, 255, 0.1);
+    border: 1px solid var(--line);
     padding: 0.75rem;
     text-align: left;
   }
 
   .post-content :global(th) {
-    background: rgba(240, 246, 255, 0.05);
+    background: var(--line-2, rgba(240, 246, 255, 0.05));
     color: var(--text);
   }
 

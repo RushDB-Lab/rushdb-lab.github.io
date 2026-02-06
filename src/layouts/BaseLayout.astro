@@ -58,6 +58,8 @@ const metaDescription = description || descriptions[lang];
     <link rel="icon" type="image/png" href="/RushDB.png" />
     <link rel="shortcut icon" type="image/png" href="/RushDB.png" />
     <link rel="apple-touch-icon" href="/RushDB.png" />
+    <meta name="theme-color" content="#050712" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fdf6e3" media="(prefers-color-scheme: light)" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
       rel="stylesheet"
@@ -85,6 +87,61 @@ const metaDescription = description || descriptions[lang];
     <link rel="alternate" hreflang="en" href="https://rushdb-lab.github.io/en/" />
     <link rel="alternate" hreflang="ja" href="https://rushdb-lab.github.io/ja/" />
     <link rel="alternate" hreflang="x-default" href="https://rushdb-lab.github.io/zh/" />
+
+    <!-- Theme initialization (FOUC prevention - must run before first paint) -->
+    <script is:inline>
+      (function() {
+        var KEY = 'rushdb-theme';
+        var ALLOWED = { dark: 1, light: 1 };
+        var root = document.documentElement;
+
+        function sanitize(v) { return typeof v === 'string' && ALLOWED[v] ? v : null; }
+        function readStorage() { try { return sanitize(localStorage.getItem(KEY)); } catch(e) { return null; } }
+
+        var media = window.matchMedia('(prefers-color-scheme: dark)');
+        var systemTheme = media.matches ? 'dark' : 'light';
+        var stored = readStorage();
+        var resolved = stored || systemTheme;
+
+        root.setAttribute('data-theme', resolved);
+        root.style.colorScheme = resolved;
+        root.setAttribute('data-theme-source', stored ? 'user' : 'system');
+        root.classList.add('theme-preload');
+
+        window.__rushdbTheme = {
+          get: function() { return root.getAttribute('data-theme') || 'dark'; },
+          set: function(next, persist) {
+            var safe = sanitize(next);
+            if (!safe) return;
+            root.setAttribute('data-theme', safe);
+            root.style.colorScheme = safe;
+            root.setAttribute('data-theme-source', persist !== false ? 'user' : 'system');
+            try {
+              if (persist !== false) localStorage.setItem(KEY, safe);
+              else localStorage.removeItem(KEY);
+            } catch(e) {}
+            window.dispatchEvent(new CustomEvent('rushdb-theme-change', { detail: { theme: safe } }));
+          },
+          toggle: function() {
+            var current = root.getAttribute('data-theme') || 'dark';
+            this.set(current === 'dark' ? 'light' : 'dark', true);
+          }
+        };
+
+        var onMediaChange = function(e) {
+          if (root.getAttribute('data-theme-source') === 'user') return;
+          var t = e.matches ? 'dark' : 'light';
+          root.setAttribute('data-theme', t);
+          root.style.colorScheme = t;
+          window.dispatchEvent(new CustomEvent('rushdb-theme-change', { detail: { theme: t } }));
+        };
+        if (media.addEventListener) {
+          media.addEventListener('change', onMediaChange);
+        } else if (media.addListener) {
+          media.addListener(onMediaChange);
+        }
+      })();
+    </script>
   </head>
   <body>
     <a href="#main-content" class="skip-link">{t('a11y.skipToContent')}</a>
@@ -222,6 +279,7 @@ const metaDescription = description || descriptions[lang];
       }, { passive: true });
 
       document.addEventListener('DOMContentLoaded', () => {
+        requestAnimationFrame(() => document.documentElement.classList.remove('theme-preload'));
         updateScrollProgress();
         setupMousePositionEffect();
         setupSectionObserver();
