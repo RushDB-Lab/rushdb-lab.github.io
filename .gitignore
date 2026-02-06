@@ -6,3 +6,4 @@ node_modules
 dist
 github-actions-deploy*
 .astro/
+.ace-tool/
