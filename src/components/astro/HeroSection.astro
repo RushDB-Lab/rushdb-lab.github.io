@@ -8,6 +8,11 @@ interface Props {
 
 const { lang } = Astro.props;
 const { t } = getI18n(lang);
+
+const fullTitle = t('hero.title');
+const brand = 'RushDB';
+const rawMotto = fullTitle.startsWith(brand) ? fullTitle.slice(brand.length) : fullTitle;
+const mottoText = rawMotto.replace(/^[\s,、，]+/, '');
 ---
 
 <section class="hero">
@@ -19,8 +24,12 @@ const { t } = getI18n(lang);
             <Image src="/RushDB.png" alt="RushDB Logo" width={697} height={697} priority />
           </div>
         </div>
-        <h1 class="hero-title">
-          {t('hero.title')}
+        <h1 class="hero-title" data-brand={brand} data-motto={mottoText}>
+          <span class="hero-placeholder" aria-hidden="true">{brand}<br />{mottoText}</span>
+          <span class="hero-typed">
+            <span class="hero-line"><span class="hero-brand"></span></span>
+            <span class="hero-line"><span class="hero-motto"></span></span>
+          </span>
         </h1>
         <p class="hero-subtitle">
           {t('hero.subtitle')}
@@ -73,3 +82,75 @@ const { t } = getI18n(lang);
     </div>
   </div>
 </section>
+
+<script>
+  function initTypewriter() {
+    const title = document.querySelector<HTMLElement>('.hero-title');
+    if (!title) return;
+
+    const placeholder = title.querySelector<HTMLElement>('.hero-placeholder');
+    const brandEl = title.querySelector<HTMLElement>('.hero-brand');
+    const mottoEl = title.querySelector<HTMLElement>('.hero-motto');
+    if (!brandEl || !mottoEl) return;
+
+    const brand = title.dataset.brand ?? '';
+    const motto = title.dataset.motto ?? '';
+
+    // Respect prefers-reduced-motion: show full text immediately
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      brandEl.textContent = brand;
+      mottoEl.textContent = motto;
+      if (placeholder) placeholder.style.display = 'none';
+      revealFollowUp();
+      return;
+    }
+
+    let i = 0;
+    let phase: 'brand' | 'motto' = 'brand';
+    brandEl.classList.add('typing');
+
+    function type() {
+      if (phase === 'brand') {
+        if (i < brand.length) {
+          brandEl!.textContent += brand[i];
+          i++;
+          setTimeout(type, 80);
+        } else {
+          brandEl!.classList.remove('typing');
+          mottoEl!.classList.add('typing');
+          phase = 'motto';
+          i = 0;
+          setTimeout(type, 100);
+        }
+      } else {
+        if (i < motto.length) {
+          mottoEl!.textContent += motto[i];
+          i++;
+          setTimeout(type, 100);
+        } else {
+          // Typing done — blink cursor then fade out
+          mottoEl!.classList.remove('typing');
+          mottoEl!.classList.add('typing-done');
+          setTimeout(() => mottoEl!.classList.remove('typing-done'), 1500);
+          revealFollowUp();
+        }
+      }
+    }
+
+    // Start typing after a brief delay
+    setTimeout(type, 400);
+  }
+
+  function revealFollowUp() {
+    const subtitle = document.querySelector<HTMLElement>('.hero-subtitle');
+    const actions = document.querySelector<HTMLElement>('.hero-actions');
+    if (subtitle) subtitle.classList.add('hero-revealed');
+    if (actions) {
+      setTimeout(() => actions.classList.add('hero-revealed'), 150);
+    }
+  }
+
+  // Run on initial load and on Astro page transitions
+  initTypewriter();
+  document.addEventListener('astro:after-swap', initTypewriter);
+</script>

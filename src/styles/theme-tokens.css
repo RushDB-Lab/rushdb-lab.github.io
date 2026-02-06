@@ -530,16 +530,22 @@ html:not(.theme-preload) .timeline-event {
   border-color: rgba(14, 116, 144, 0.22);
 }
 
-/* Hero title text gradient */
-:root[data-theme="light"] .hero-title .lang-content {
+/* Hero title gradient - light mode */
+:root[data-theme="light"] .hero-typed {
   background: linear-gradient(
-    180deg,
-    rgba(41, 37, 28, 0.96),
-    rgba(41, 37, 28, 0.78)
+    135deg,
+    rgba(41, 37, 28, 0.96) 0%,
+    var(--theme-accent-2) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+:root[data-theme="light"] .hero-brand.typing::after,
+:root[data-theme="light"] .hero-motto.typing::after,
+:root[data-theme="light"] .hero-motto.typing-done::after {
+  -webkit-text-fill-color: var(--theme-accent-2);
 }
 
 /* Card hover states (desktop enhanced) */
