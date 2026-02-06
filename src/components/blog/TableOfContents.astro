@@ -29,85 +29,111 @@ const filteredHeadings = headings.filter(h => h.depth <= 3);
 </nav>
 
 <script>
-  function initTOC() {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const indicator = document.querySelector('.toc-indicator') as HTMLElement;
+  (() => {
+    let cleanupToc: (() => void) | undefined;
 
-    if (!tocLinks.length || !indicator) return;
+    function initTOC() {
+      if (cleanupToc) cleanupToc();
 
-    const headingElements = Array.from(tocLinks).map(link => {
-      const slug = link.getAttribute('data-heading-slug');
-      return document.getElementById(slug || '');
-    }).filter(Boolean) as HTMLElement[];
+      const tocRoot = document.querySelector('.toc');
+      if (!tocRoot) return;
 
-    let activeLink: Element | null = null;
+      const tocList = tocRoot.querySelector('.toc-list');
+      const indicator = tocRoot.querySelector('.toc-indicator') as HTMLElement | null;
+      const tocLinks = Array.from(tocRoot.querySelectorAll<HTMLAnchorElement>('.toc-link'));
 
-    function updateActiveHeading() {
-      const scrollY = window.scrollY;
-      const offset = 120;
+      if (!tocList || !indicator || tocLinks.length === 0) return;
 
-      let currentHeading: HTMLElement | null = null;
-
-      for (const heading of headingElements) {
-        if (heading.offsetTop - offset <= scrollY) {
-          currentHeading = heading;
-        }
+      const linksBySlug = new Map<string, HTMLAnchorElement>();
+      for (const link of tocLinks) {
+        const slug = link.dataset.headingSlug;
+        if (slug) linksBySlug.set(slug, link);
       }
 
-      if (currentHeading) {
-        const slug = currentHeading.id;
-        const newActiveLink = document.querySelector(`.toc-link[data-heading-slug="${slug}"]`);
+      const headingElements = Array.from(linksBySlug.keys())
+        .map((slug) => document.getElementById(slug))
+        .filter(Boolean) as HTMLElement[];
+      if (headingElements.length === 0) return;
 
-        if (newActiveLink && newActiveLink !== activeLink) {
-          // Remove active class from previous
-          if (activeLink) {
-            activeLink.classList.remove('active');
-          }
+      let activeLink: HTMLAnchorElement | null = null;
+      let scrollRaf: number | null = null;
 
-          // Add active class to new
-          newActiveLink.classList.add('active');
-          activeLink = newActiveLink;
+      function setActiveLink(nextLink: HTMLAnchorElement | null) {
+        if (!nextLink || nextLink === activeLink) return;
+        if (activeLink) activeLink.classList.remove('active');
+        nextLink.classList.add('active');
+        activeLink = nextLink;
 
-          // Update indicator position
-          const linkRect = newActiveLink.getBoundingClientRect();
-          const tocRect = document.querySelector('.toc-list')?.getBoundingClientRect();
-
-          if (tocRect) {
-            const top = linkRect.top - tocRect.top;
-            indicator.style.transform = `translateY(${top}px)`;
-            indicator.style.height = `${linkRect.height}px`;
-            indicator.style.opacity = '1';
-          }
-        }
+        const linkRect = nextLink.getBoundingClientRect();
+        const listRect = tocList.getBoundingClientRect();
+        const top = linkRect.top - listRect.top;
+        indicator.style.transform = `translateY(${top}px)`;
+        indicator.style.height = `${linkRect.height}px`;
+        indicator.style.opacity = '1';
       }
+
+      function updateActiveHeading() {
+        const scrollY = window.scrollY;
+        const offset = 120;
+        let currentHeading: HTMLElement | null = null;
+
+        for (const heading of headingElements) {
+          if (heading.offsetTop - offset <= scrollY) currentHeading = heading;
+        }
+        if (!currentHeading) return;
+
+        const nextLink = linksBySlug.get(currentHeading.id) || null;
+        setActiveLink(nextLink);
+      }
+
+      function onScroll() {
+        if (scrollRaf !== null) return;
+        scrollRaf = window.requestAnimationFrame(() => {
+          updateActiveHeading();
+          scrollRaf = null;
+        });
+      }
+
+      function onTocClick(event: Event) {
+        const target = event.target as HTMLElement | null;
+        const link = target?.closest<HTMLAnchorElement>('.toc-link');
+        if (!link) return;
+        event.preventDefault();
+
+        const slug = link.dataset.headingSlug;
+        const heading = slug ? document.getElementById(slug) : null;
+        if (!heading) return;
+
+        window.scrollTo({
+          top: heading.offsetTop - 100,
+          behavior: 'smooth',
+        });
+      }
+
+      tocRoot.addEventListener('click', onTocClick);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      updateActiveHeading();
+
+      cleanupToc = () => {
+        tocRoot.removeEventListener('click', onTocClick);
+        window.removeEventListener('scroll', onScroll);
+        if (scrollRaf !== null) {
+          window.cancelAnimationFrame(scrollRaf);
+          scrollRaf = null;
+        }
+      };
     }
 
-    // Smooth scroll on click
-    tocLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const slug = link.getAttribute('data-heading-slug');
-        const target = document.getElementById(slug || '');
-        if (target) {
-          const offset = 100;
-          const targetPosition = target.offsetTop - offset;
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-        }
-      });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTOC, { once: true });
+    } else {
+      initTOC();
+    }
+    document.addEventListener('astro:page-load', initTOC);
+    document.addEventListener('astro:before-swap', () => {
+      if (cleanupToc) cleanupToc();
     });
-
-    // Initial check and scroll listener
-    updateActiveHeading();
-    window.addEventListener('scroll', updateActiveHeading, { passive: true });
-  }
-
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', initTOC);
-  // Re-initialize on Astro page transitions
-  document.addEventListener('astro:page-load', initTOC);
+  })();
 </script>
 
 <style>

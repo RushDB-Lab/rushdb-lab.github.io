@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import 'katex/dist/katex.min.css';
 import { getI18n, type Lang } from '../i18n';
 import NavBar from '../components/vue/NavBar.vue';
 import BackToTop from '../components/vue/BackToTop.vue';
@@ -91,14 +90,16 @@ const metaDescription = description || descriptions[lang];
     <a href="#main-content" class="skip-link">{t('a11y.skipToContent')}</a>
     <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label={t('a11y.scrollProgress')}></div>
 
-    <NavBar client:load lang={lang} currentPath={Astro.url.pathname} />
+    <NavBar client:idle lang={lang} currentPath={Astro.url.pathname} />
 
     <slot />
 
-    <BackToTop client:load lang={lang} />
+    <BackToTop client:idle lang={lang} />
 
     <script is:inline>
       document.documentElement.classList.add('js');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
       // Scroll progress
       function updateScrollProgress() {
@@ -111,43 +112,84 @@ const metaDescription = description || descriptions[lang];
         scrollProgress.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
       }
 
-      // Mouse follow effect
-      function updateMousePosition(e) {
-        if (e.pointerType === 'touch') return;
-        document.body.style.setProperty('--mx', `${e.clientX}px`);
-        document.body.style.setProperty('--my', `${e.clientY}px`);
+      // Mouse follow effect (skip on touch and reduced motion)
+      function setupMousePositionEffect() {
+        if (prefersReducedMotion || !supportsFinePointer) return;
+
+        let pointerRaf = null;
+        window.addEventListener('pointermove', (event) => {
+          if (event.pointerType === 'touch' || pointerRaf !== null) return;
+          pointerRaf = requestAnimationFrame(() => {
+            document.body.style.setProperty('--mx', `${event.clientX}px`);
+            document.body.style.setProperty('--my', `${event.clientY}px`);
+            pointerRaf = null;
+          });
+        }, { passive: true });
       }
 
       // Section visibility observer
       function setupSectionObserver() {
+        const sections = Array.from(document.querySelectorAll('.section'));
+        if (sections.length === 0) return;
+
+        let remaining = sections.length;
         const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = '1';
-              entry.target.style.transform = 'translateY(0)';
-            }
-          });
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+            remaining -= 1;
+          }
+
+          if (remaining <= 0) observer.disconnect();
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.section').forEach((el) => observer.observe(el));
-      }
-
-      // Member card hover z-index
-      function setupMemberCardHover() {
-        document.querySelectorAll('.member-card').forEach((card) => {
-          card.addEventListener('mouseenter', () => card.style.zIndex = '10');
-          card.addEventListener('mouseleave', () => card.style.zIndex = '1');
-        });
+        sections.forEach((el) => observer.observe(el));
       }
 
       // Busuanzi analytics
-      function loadBusuanzi() {
+      function loadBusuanziScript() {
         if (document.getElementById('busuanzi-script')) return;
         const script = document.createElement('script');
         script.id = 'busuanzi-script';
         script.async = true;
         script.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
         document.body.appendChild(script);
+      }
+
+      function setupBusuanziLoader() {
+        let loaded = false;
+        const loadOnce = () => {
+          if (loaded) return;
+          loaded = true;
+          loadBusuanziScript();
+        };
+
+        const footer = document.querySelector('.footer');
+        if (!footer) {
+          loadOnce();
+          return;
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              observer.disconnect();
+              loadOnce();
+            }
+          }, { rootMargin: '240px 0px 240px 0px' });
+          observer.observe(footer);
+        } else {
+          loadOnce();
+        }
+
+        // Fallback to avoid missing stats on pages where footer is never reached.
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadOnce, { timeout: 5000 });
+        } else {
+          setTimeout(loadOnce, 5000);
+        }
       }
 
       // Scroll to section requested from another page (keeps URL clean)
@@ -170,7 +212,6 @@ const metaDescription = description || descriptions[lang];
 
       // Initialize
       let scrollRaf = null;
-      let pointerRaf = null;
 
       window.addEventListener('scroll', () => {
         if (scrollRaf !== null) return;
@@ -180,19 +221,11 @@ const metaDescription = description || descriptions[lang];
         });
       }, { passive: true });
 
-      window.addEventListener('pointermove', (e) => {
-        if (pointerRaf !== null) return;
-        pointerRaf = requestAnimationFrame(() => {
-          updateMousePosition(e);
-          pointerRaf = null;
-        });
-      }, { passive: true });
-
       document.addEventListener('DOMContentLoaded', () => {
         updateScrollProgress();
+        setupMousePositionEffect();
         setupSectionObserver();
-        setupMemberCardHover();
-        loadBusuanzi();
+        setupBusuanziLoader();
         handlePendingSectionScroll();
       });
     </script>

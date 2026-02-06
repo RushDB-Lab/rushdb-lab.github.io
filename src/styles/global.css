@@ -783,7 +783,7 @@
       }
 
       .project-item:hover .project-icon {
-        transform: scale(1.2) rotate(-5deg);
+        transform: scale(1.2);
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
@@ -3347,7 +3347,7 @@
       }
 
       .project-item:hover .project-icon {
-        transform: scale(1.15) rotate(-5deg);
+        transform: scale(1.15);
         transition-delay: 0ms;
       }
 
@@ -3574,4 +3574,15 @@
         .achievement-item:hover {
           transform: none !important;
         }
+      }
+
+      /* Keep hovered member cards above neighbors without JS listeners */
+      .members-grid .card-link {
+        position: relative;
+        z-index: 1;
+      }
+
+      .members-grid .card-link:hover,
+      .members-grid .card-link:focus-within {
+        z-index: 10;
       }

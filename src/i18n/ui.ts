@@ -85,6 +85,19 @@ export const ui = {
           analysis: '性能分析工具',
         },
       },
+      rucbase2025: {
+        title: 'CSCC-DB-Rucbase-2025',
+        tags: {
+          database: '数据库',
+          openSource: '开源',
+        },
+        desc: '2024 全国大学生计算机系统能力大赛数据库赛道全国一等奖作品，基于 RucBase 的数据库系统实现与性能优化。',
+        features: {
+          school: '队伍学校：成都理工大学',
+          team: '队伍名称：RushDB',
+          tpcc: 'TPC-C 测试结果：32,820 txns/min',
+        },
+      },
     },
     members: {
       title: '团队成员',
@@ -260,6 +273,19 @@ export const ui = {
           analysis: 'Performance Analysis Tools',
         },
       },
+      rucbase2025: {
+        title: 'CSCC-DB-Rucbase-2025',
+        tags: {
+          database: 'Database',
+          openSource: 'Open Source',
+        },
+        desc: 'National First Prize project in the 2024 National College Computer System Capability Competition (Database track), focused on implementation and performance optimization based on RucBase.',
+        features: {
+          school: 'School: Chengdu University of Technology',
+          team: 'Team: RushDB',
+          tpcc: 'TPC-C: 32,820 txns/min',
+        },
+      },
     },
     members: {
       title: 'Team Members',
@@ -433,6 +459,19 @@ export const ui = {
           optimization: '高性能クエリ最適化',
           vector: 'ベクターデータベースサポート',
           analysis: 'パフォーマンス分析ツール',
+        },
+      },
+      rucbase2025: {
+        title: 'CSCC-DB-Rucbase-2025',
+        tags: {
+          database: 'データベース',
+          openSource: 'オープンソース',
+        },
+        desc: '2024年全国大学生コンピュータシステム能力大会（データベース競技）全国一等賞の作品で、RucBase を基盤に実装と性能最適化を行いました。',
+        features: {
+          school: '所属大学：成都理工大学',
+          team: 'チーム名：RushDB',
+          tpcc: 'TPC-C 結果：32,820 txns/min',
         },
       },
     },

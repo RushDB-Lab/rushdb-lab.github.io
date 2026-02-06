@@ -2,6 +2,17 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getI18n, type Lang } from '../../i18n';
 
+const relatedPostsCache = new Map<Lang, Promise<CollectionEntry<'blog'>[]>>();
+
+function getPostsByLang(lang: Lang) {
+  let cachedPosts = relatedPostsCache.get(lang);
+  if (!cachedPosts) {
+    cachedPosts = getCollection('blog', ({ id }) => id.startsWith(`${lang}/`));
+    relatedPostsCache.set(lang, cachedPosts);
+  }
+  return cachedPosts;
+}
+
 interface Props {
   currentPost: CollectionEntry<'blog'>;
   lang: Lang;
@@ -12,9 +23,9 @@ const { currentPost, lang, maxPosts = 3 } = Astro.props;
 const { t } = getI18n(lang);
 
 // Get all posts in the same language
-const allPosts = await getCollection('blog', ({ id }) => {
-  return id.startsWith(`${lang}/`);
-});
+const allPosts = await getPostsByLang(lang);
+const currentPostTimestamp = currentPost.data.pubDate.getTime();
+const currentTags = new Set(currentPost.data.tags);
 
 // Calculate relevance score for each post
 function getRelevanceScore(post: CollectionEntry<'blog'>): number {
@@ -28,7 +39,6 @@ function getRelevanceScore(post: CollectionEntry<'blog'>): number {
   }
 
   // Matching tags: +1 point per match
-  const currentTags = new Set(currentPost.data.tags);
   for (const tag of post.data.tags) {
     if (currentTags.has(tag)) {
       score += 1;
@@ -37,7 +47,7 @@ function getRelevanceScore(post: CollectionEntry<'blog'>): number {
 
   // Recency bonus: more recent posts get slight preference
   const daysDiff = Math.abs(
-    (post.data.pubDate.getTime() - currentPost.data.pubDate.getTime()) / (1000 * 60 * 60 * 24)
+    (post.data.pubDate.getTime() - currentPostTimestamp) / (1000 * 60 * 60 * 24)
   );
   if (daysDiff < 30) score += 0.5;
   if (daysDiff < 7) score += 0.5;
