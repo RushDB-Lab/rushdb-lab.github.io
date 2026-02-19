@@ -196,6 +196,7 @@ export const ui = {
       scrollProgress: '页面滚动进度',
       mainNavigation: '主导航',
       backToTop: '返回顶部',
+      musicToggle: '播放/暂停背景音乐',
     },
     blog: {
       title: '博客',
@@ -404,6 +405,7 @@ export const ui = {
       scrollProgress: 'Page scroll progress',
       mainNavigation: 'Main navigation',
       backToTop: 'Back to top',
+      musicToggle: 'Toggle background music',
     },
     blog: {
       title: 'Blog',
@@ -612,6 +614,7 @@ export const ui = {
       scrollProgress: 'ページスクロール進捗',
       mainNavigation: 'メインナビゲーション',
       backToTop: 'トップへ戻る',
+      musicToggle: 'BGMの再生/一時停止',
     },
     blog: {
       title: 'ブログ',
