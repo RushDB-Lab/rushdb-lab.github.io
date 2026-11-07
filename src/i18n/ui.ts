@@ -119,10 +119,10 @@ export const ui = {
       title: '团队成员',
       nowAtLabel: '目前所在',
       mingTai: {
-        name: '明泰',
+        name: 'Tai Ming（明泰）',
         school: '成都理工大学 26 届',
         major: '智能科学与技术',
-        nowAt: '中国人民大学',
+        nowAt: '中国人民大学 · 数据库方向博士生',
         location: '四川省成都市',
       },
       huXin: {
@@ -328,10 +328,10 @@ export const ui = {
       title: 'Team Members',
       nowAtLabel: 'Current affiliation',
       mingTai: {
-        name: 'Tai Ming',
+        name: 'Tai Ming (明泰)',
         school: 'Chengdu University of Technology, Class of 2026',
         major: 'Intelligent Science and Technology',
-        nowAt: 'Renmin University of China',
+        nowAt: 'Ph.D. Student, Renmin University of China',
         location: 'Chengdu, Sichuan Province, China',
       },
       huXin: {
@@ -537,10 +537,10 @@ export const ui = {
       title: 'チームメンバー',
       nowAtLabel: '現在所属',
       mingTai: {
-        name: '明泰',
+        name: 'Tai Ming（明泰）',
         school: '成都理工大学 26期',
         major: '知能科学技術',
-        nowAt: '中国人民大学',
+        nowAt: '中国人民大学・博士課程（データベースシステム）',
         location: '中国四川省成都市',
       },
       huXin: {
